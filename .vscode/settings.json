@@ -4,6 +4,9 @@
   "accessibility.voice.autoSynthesize": "off",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    { "text": "日本語でコミットメッセージを生成してください。" }
+  ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
