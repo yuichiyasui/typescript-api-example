@@ -1,0 +1,30 @@
+{
+  "name": "@typescript-api-example/hono-api",
+  "version": "1.0.0",
+  "description": "Hono API application",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "4.8.2",
+    "@hono/node-server": "1.14.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.2.0",
+    "@typescript-eslint/eslint-plugin": "8.34.1",
+    "@typescript-eslint/parser": "8.34.1",
+    "eslint": "9.29.0",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=22.16.0"
+  }
+}

@@ -1,10 +1,21 @@
 {
   "name": "typescript-api-example",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "type-check": "pnpm -r type-check",
+    "clean": "pnpm -r clean",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
   },
   "volta": {
     "node": "22.16.0"
-  }
+  },
+  "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f"
 }
