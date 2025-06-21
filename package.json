@@ -7,11 +7,13 @@
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
     "lint:fix": "pnpm -r lint:fix",
+    "format": "prettier . --write",
     "type-check": "pnpm -r type-check",
     "clean": "pnpm -r clean",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "prettier": "3.5.3",
     "typescript": "5.8.3"
   },
   "volta": {
