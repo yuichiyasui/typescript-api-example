@@ -13,13 +13,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "4.8.2",
-    "@hono/node-server": "1.14.4"
+    "@hono/node-server": "1.14.4",
+    "hono": "4.8.2"
   },
   "devDependencies": {
     "@types/node": "22.2.0",
-    "@typescript-eslint/eslint-plugin": "8.34.1",
-    "@typescript-eslint/parser": "8.34.1",
+    "@typescript-api-example/eslint-config": "workspace:*",
     "@typescript-api-example/tsconfig": "workspace:*",
     "eslint": "9.29.0",
     "tsx": "4.20.3",
