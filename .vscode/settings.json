@@ -1,4 +1,7 @@
 {
+  "accessibility.voice.speechLanguage": "ja-JP",
+  "accessibility.voice.speechTimeout": 1200,
+  "accessibility.voice.autoSynthesize": "off",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
