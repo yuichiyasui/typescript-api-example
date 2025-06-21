@@ -1,0 +1,7 @@
+{
+  "name": "@typescript-api-example/tsconfig",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./tsconfig.json"
+  }
+}

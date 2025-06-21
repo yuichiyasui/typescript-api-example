@@ -24,6 +24,9 @@ importers:
       '@types/node':
         specifier: 22.2.0
         version: 22.2.0
+      '@typescript-api-example/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       '@typescript-eslint/eslint-plugin':
         specifier: 8.34.1
         version: 8.34.1(@typescript-eslint/parser@8.34.1)(eslint@9.29.0)(typescript@5.8.3)
@@ -41,6 +44,8 @@ importers:
         version: 5.8.3
 
   packages/eslint-config: {}
+
+  packages/tsconfig: {}
 
 packages:
 
