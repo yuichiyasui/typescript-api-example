@@ -3,8 +3,8 @@
   "compilerOptions": {
     // 基本設定
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "lib": ["ES2022"],
 
     // 出力設定
