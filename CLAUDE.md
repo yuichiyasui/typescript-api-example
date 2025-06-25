@@ -113,3 +113,7 @@ src/
 1. `src/infrastructure/routes/`にルートハンドラーを作成
 2. `src/infrastructure/server.ts`に登録
 3. 必要に応じてコンテキストにリポジトリを追加
+
+## 作業ガイドライン
+
+- claudeのタスクの完了時はlintとtype-checkを実行するようにしてください。
