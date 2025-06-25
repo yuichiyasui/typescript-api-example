@@ -123,3 +123,8 @@ Thumbs.db
 # Temporary folders
 tmp/
 temp/
+
+# Database
+local.db
+*.db
+*.sqlite

@@ -1,19 +1,20 @@
+import { nanoid } from 'nanoid'
+
 export class Task {
   constructor(
-    private readonly _id: number,
+    private readonly _id: string,
     private readonly _name: string,
   ) {}
 
-  static create(): Task {
-    // TODO: 自動採番する
-    return new Task(0, "New Task");
+  static create(name: string): Task {
+    return new Task(nanoid(), name);
   }
 
-  static restore(id: number, name: string): Task {
+  static restore(id: string, name: string): Task {
     return new Task(id, name);
   }
 
-  get id(): number {
+  get id(): string {
     return this._id;
   }
 
