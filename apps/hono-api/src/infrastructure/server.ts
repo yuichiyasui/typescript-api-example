@@ -33,7 +33,7 @@ app.use("*", async (c, next) => {
     method: c.req.method,
     path: c.req.path,
     statusCode: c.res.status,
-    duration,
+    duration: `${duration}ms`,
   }, "Request completed");
 });
 
