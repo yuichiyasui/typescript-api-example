@@ -128,3 +128,6 @@ temp/
 local.db
 *.db
 *.sqlite
+
+# Turborepo
+.turbo/
