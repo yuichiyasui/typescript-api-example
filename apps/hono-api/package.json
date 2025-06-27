@@ -12,6 +12,9 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "lint:inspect": "eslint --inspect-config",
     "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -29,10 +32,12 @@
     "@types/node": "22.2.0",
     "@typescript-api-example/eslint-config": "workspace:*",
     "@typescript-api-example/tsconfig": "workspace:*",
+    "@vitest/ui": "3.2.4",
     "drizzle-kit": "0.31.2",
     "eslint": "9.29.0",
     "tsx": "4.20.3",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
   },
   "engines": {
     "node": ">=22.16.0"
