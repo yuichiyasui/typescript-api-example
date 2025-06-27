@@ -7,5 +7,6 @@ export type Context = {
     tasksRepository: ITasksRepository;
     logger: Logger;
     traceId: string;
+    startTime: number;
   };
 };

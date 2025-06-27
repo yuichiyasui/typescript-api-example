@@ -12,8 +12,9 @@ const app = new Hono<Context>();
 
 app.use("*", traceIdMiddleware);
 
-app.use("*", (c, next) => {
+app.use("*", async (c, next) => {
   const traceId = c.get("traceId");
+  const startTime = c.get("startTime");
   const childLogger = logger.child({ traceId });
   
   c.set("logger", childLogger);
@@ -25,7 +26,15 @@ app.use("*", (c, next) => {
     userAgent: c.req.header("User-Agent"),
   }, "Request started");
   
-  return next();
+  await next();
+  
+  const duration = Date.now() - startTime;
+  childLogger.info({
+    method: c.req.method,
+    path: c.req.path,
+    statusCode: c.res.status,
+    duration,
+  }, "Request completed");
 });
 
 app.route("/tasks", tasksRoutes);
