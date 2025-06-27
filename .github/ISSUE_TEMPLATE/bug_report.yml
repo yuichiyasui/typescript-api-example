@@ -2,7 +2,7 @@ name: Bug Report
 description: バグや問題を報告するためのテンプレート
 title: "[Bug] "
 labels: ["bug", "needs triage"]
-assignees: []
+assignees: ["yuichiyasui"]
 body:
   - type: markdown
     attributes:
@@ -45,7 +45,7 @@ body:
         1. 
         2. 
         3. 
-        4. 
+        4.
     validations:
       required: true
 
