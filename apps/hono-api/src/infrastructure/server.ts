@@ -14,27 +14,33 @@ app.use("*", traceIdMiddleware);
 
 app.use("*", async (c, next) => {
   const traceId = c.get("traceId");
-  const startTime = c.get("startTime");
+  const startTime = Date.now();
   const childLogger = logger.child({ traceId });
-  
+
   c.set("logger", childLogger);
   c.set("tasksRepository", new TasksRepository());
-  
-  childLogger.info({
-    method: c.req.method,
-    path: c.req.path,
-    userAgent: c.req.header("User-Agent"),
-  }, "Request started");
-  
+
+  childLogger.info(
+    {
+      method: c.req.method,
+      path: c.req.path,
+      userAgent: c.req.header("User-Agent"),
+    },
+    "Request started",
+  );
+
   await next();
-  
+
   const duration = Date.now() - startTime;
-  childLogger.info({
-    method: c.req.method,
-    path: c.req.path,
-    statusCode: c.res.status,
-    duration: `${duration}ms`,
-  }, "Request completed");
+  childLogger.info(
+    {
+      method: c.req.method,
+      path: c.req.path,
+      statusCode: c.res.status,
+      duration: `${duration}ms`,
+    },
+    "Request completed",
+  );
 });
 
 app.route("/tasks", tasksRoutes);
