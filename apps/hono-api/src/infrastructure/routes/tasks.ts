@@ -5,14 +5,25 @@ import type { Context } from "../context.js";
 
 const app = new Hono<Context>();
 
-app.get("/", (c) => {
-  const tasks = listTasks({
-    tasksRepository: c.get("tasksRepository"),
-  });
+app.get("/", async (c) => {
+  const logger = c.get("logger");
+  
+  logger.info("Fetching tasks list");
+  
+  try {
+    const tasks = await listTasks({
+      tasksRepository: c.get("tasksRepository"),
+    });
 
-  return c.json({
-    items: tasks,
-  });
+    logger.info({ taskCount: tasks.length }, "Tasks retrieved successfully");
+
+    return c.json({
+      items: tasks,
+    });
+  } catch (error) {
+    logger.error({ error }, "Failed to retrieve tasks");
+    throw error;
+  }
 });
 
 export const tasksRoutes = app;
