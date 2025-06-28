@@ -1,5 +1,6 @@
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
+import { swaggerUI } from "@hono/swagger-ui";
+import { OpenAPIHono } from "@hono/zod-openapi";
 
 import type { Context } from "./context.js";
 import { env } from "./env.js";
@@ -8,7 +9,7 @@ import { traceIdMiddleware } from "./middleware/trace-id.js";
 import { TasksRepository } from "./repository/tasks-repository.js";
 import { tasksRoutes } from "./routes/tasks.js";
 
-const app = new Hono<Context>();
+const app = new OpenAPIHono<Context>();
 
 app.use("*", traceIdMiddleware);
 
@@ -44,6 +45,18 @@ app.use("*", async (c, next) => {
 });
 
 app.route("/tasks", tasksRoutes);
+
+// OpenAPI documentation endpoints
+app.doc("/openapi.json", {
+  openapi: "3.0.0",
+  info: {
+    title: "Task API",
+    version: "1.0.0",
+    description: "A simple task management API",
+  },
+});
+
+app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
 serve({
   fetch: app.fetch,
