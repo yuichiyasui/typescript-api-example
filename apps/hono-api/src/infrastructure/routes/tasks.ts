@@ -1,11 +1,12 @@
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
 
 import { listTasks } from "../../application/service/tasks.js";
 import type { Context } from "../context.js";
+import { listTasksRoute } from "../schemas/tasks.js";
 
-const app = new Hono<Context>();
+const app = new OpenAPIHono<Context>();
 
-app.get("/", async (c) => {
+app.openapi(listTasksRoute, async (c) => {
   const logger = c.get("logger");
   
   logger.info("Fetching tasks list");
@@ -18,7 +19,10 @@ app.get("/", async (c) => {
     logger.info({ taskCount: tasks.length }, "Tasks retrieved successfully");
 
     return c.json({
-      items: tasks,
+      items: tasks.map(task => ({
+        id: task.id,
+        name: task.name,
+      })),
     });
   } catch (error) {
     logger.error({ error }, "Failed to retrieve tasks");
