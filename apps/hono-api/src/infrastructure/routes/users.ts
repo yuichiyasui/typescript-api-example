@@ -9,9 +9,9 @@ const app = new OpenAPIHono<Context>();
 app.openapi(registerUserRoute, async (c) => {
   const logger = c.get("logger");
   const body = c.req.valid("json");
-  
+
   logger.info("User registration attempt");
-  
+
   try {
     const result = await registerUser(
       { usersRepository: c.get("usersRepository") },

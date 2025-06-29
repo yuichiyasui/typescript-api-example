@@ -4,7 +4,9 @@ import { createRoute } from "@hono/zod-openapi";
 // Task schemas
 export const TaskSchema = z.object({
   id: z.string().openapi({ description: "タスクID", example: "abc123" }),
-  name: z.string().openapi({ description: "タスク名", example: "プロジェクトを完了する" }),
+  name: z
+    .string()
+    .openapi({ description: "タスク名", example: "プロジェクトを完了する" }),
 });
 
 export const TasksListSchema = z.object({

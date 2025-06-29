@@ -17,8 +17,12 @@ export const users = sqliteTable("users", {
 export const tasks = sqliteTable("tasks", {
   id: text("id").primaryKey(),
   name: text("name", { length: 255 }).notNull(),
-  createdBy: text("created_by").notNull().references(() => users.id),
-  updatedBy: text("updated_by").notNull().references(() => users.id),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => users.id),
+  updatedBy: text("updated_by")
+    .notNull()
+    .references(() => users.id),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

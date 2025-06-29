@@ -13,48 +13,68 @@ describe("Password", () => {
     it("短すぎるパスワードは無効", () => {
       const result = Password.validate("Short1!");
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must be at least 8 characters long");
+      expect(result.errors).toContain(
+        "Password must be at least 8 characters long",
+      );
     });
 
     it("長すぎるパスワードは無効", () => {
       const longPassword = "A".repeat(129) + "1!";
       const result = Password.validate(longPassword);
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must be no more than 128 characters long");
+      expect(result.errors).toContain(
+        "Password must be no more than 128 characters long",
+      );
     });
 
     it("小文字がないパスワードは無効", () => {
       const result = Password.validate("UPPERCASE123!");
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must contain at least one lowercase letter");
+      expect(result.errors).toContain(
+        "Password must contain at least one lowercase letter",
+      );
     });
 
     it("大文字がないパスワードは無効", () => {
       const result = Password.validate("lowercase123!");
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must contain at least one uppercase letter");
+      expect(result.errors).toContain(
+        "Password must contain at least one uppercase letter",
+      );
     });
 
     it("数字がないパスワードは無効", () => {
       const result = Password.validate("NoNumbers!");
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must contain at least one number");
+      expect(result.errors).toContain(
+        "Password must contain at least one number",
+      );
     });
 
     it("特殊文字がないパスワードは無効", () => {
       const result = Password.validate("NoSpecialChar123");
       expect(result.isValid).toBe(false);
-      expect(result.errors).toContain("Password must contain at least one special character");
+      expect(result.errors).toContain(
+        "Password must contain at least one special character",
+      );
     });
 
     it("複数の条件を満たさないパスワードは複数のエラーを返す", () => {
       const result = Password.validate("weak");
       expect(result.isValid).toBe(false);
       expect(result.errors.length).toBeGreaterThan(1);
-      expect(result.errors).toContain("Password must be at least 8 characters long");
-      expect(result.errors).toContain("Password must contain at least one uppercase letter");
-      expect(result.errors).toContain("Password must contain at least one number");
-      expect(result.errors).toContain("Password must contain at least one special character");
+      expect(result.errors).toContain(
+        "Password must be at least 8 characters long",
+      );
+      expect(result.errors).toContain(
+        "Password must contain at least one uppercase letter",
+      );
+      expect(result.errors).toContain(
+        "Password must contain at least one number",
+      );
+      expect(result.errors).toContain(
+        "Password must contain at least one special character",
+      );
     });
   });
 

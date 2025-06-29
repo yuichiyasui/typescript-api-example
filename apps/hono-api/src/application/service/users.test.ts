@@ -49,10 +49,16 @@ describe("registerUser", () => {
       expect(result.userId).toBe("user123");
     }
 
-    expect(mockUsersRepository.findByEmail).toHaveBeenCalledWith("test@example.com");
+    expect(mockUsersRepository.findByEmail).toHaveBeenCalledWith(
+      "test@example.com",
+    );
     expect(mockUsersRepository.save).toHaveBeenCalledWith(mockUser);
     expect(Password.validate).toHaveBeenCalledWith("StrongPassword123!");
-    expect(User.create).toHaveBeenCalledWith("Test User", "test@example.com", "StrongPassword123!");
+    expect(User.create).toHaveBeenCalledWith(
+      "Test User",
+      "test@example.com",
+      "StrongPassword123!",
+    );
   });
 
   it("パスワード検証失敗時はエラーを返す", async () => {
@@ -78,7 +84,9 @@ describe("registerUser", () => {
 
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.errors).toEqual(["Password must be at least 8 characters long"]);
+      expect(result.errors).toEqual([
+        "Password must be at least 8 characters long",
+      ]);
     }
 
     expect(mockUsersRepository.findByEmail).not.toHaveBeenCalled();
@@ -114,7 +122,9 @@ describe("registerUser", () => {
       expect(result.errors).toEqual(["User with this email already exists"]);
     }
 
-    expect(mockUsersRepository.findByEmail).toHaveBeenCalledWith("test@example.com");
+    expect(mockUsersRepository.findByEmail).toHaveBeenCalledWith(
+      "test@example.com",
+    );
     expect(mockUsersRepository.save).not.toHaveBeenCalled();
     expect(Password.validate).toHaveBeenCalledWith("StrongPassword123!");
   });
@@ -149,6 +159,10 @@ describe("registerUser", () => {
     );
 
     expect(mockUsersRepository.save).toHaveBeenCalledWith(mockUser);
-    expect(User.create).toHaveBeenCalledWith("Test User", "test@example.com", "StrongPassword123!");
+    expect(User.create).toHaveBeenCalledWith(
+      "Test User",
+      "test@example.com",
+      "StrongPassword123!",
+    );
   });
 });

@@ -24,9 +24,7 @@ const developmentConfig = {
   },
 };
 
-export const logger = 
-  env.NODE_ENV === "development" 
-    ? pino(developmentConfig) 
-    : pino(baseConfig);
+export const logger =
+  env.NODE_ENV === "development" ? pino(developmentConfig) : pino(baseConfig);
 
 export type Logger = typeof logger;
