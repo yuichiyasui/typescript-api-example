@@ -35,6 +35,9 @@ importers:
       bcrypt:
         specifier: 6.0.0
         version: 6.0.0
+      dotenv:
+        specifier: 17.0.0
+        version: 17.0.0
       drizzle-orm:
         specifier: 0.44.2
         version: 0.44.2(@libsql/client@0.15.9)
@@ -1675,6 +1678,11 @@ packages:
   /detect-libc@2.0.2:
     resolution: {integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==}
     engines: {node: '>=8'}
+    dev: false
+
+  /dotenv@17.0.0:
+    resolution: {integrity: sha512-A0BJ5lrpJVSfnMMXjmeO0xUnoxqsBHWCoqqTnGwGYVdnctqXXUEhJOO7LxmgxJon9tEZFGpe0xPRX0h2v3AANQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /drizzle-kit@0.31.2:
