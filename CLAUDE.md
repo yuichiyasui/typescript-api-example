@@ -116,4 +116,5 @@ src/
 
 ## 作業ガイドライン
 
-- claudeのタスクの完了時はlintとtype-checkを実行するようにしてください。
+- claudeのタスクの完了時はformatとlint:fixとtype-checkを実行するようにしてください。
+- やり取りは日本語で行なってください。
