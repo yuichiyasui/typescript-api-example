@@ -1,8 +1,9 @@
-import { getCookie } from "hono/cookie";
 import type { MiddlewareHandler } from "hono";
+import { getCookie } from "hono/cookie";
+
+import type { Context } from "../context.js";
 
 import { verifyAccessToken } from "./jwt.js";
-import type { Context } from "../context.js";
 
 export const authMiddleware: MiddlewareHandler<Context> = async (
   c,

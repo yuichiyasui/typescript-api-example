@@ -3,14 +3,16 @@ export const UserRoleConstants = {
   ADMIN: "ADMIN",
 } as const;
 
-export type UserRoleConstant = typeof UserRoleConstants[keyof typeof UserRoleConstants];
+export type UserRoleConstant =
+  (typeof UserRoleConstants)[keyof typeof UserRoleConstants];
 
 export const UserRoleDbValues = {
   MEMBER: 1,
   ADMIN: 2,
 } as const;
 
-export type UserRoleDbValue = typeof UserRoleDbValues[keyof typeof UserRoleDbValues];
+export type UserRoleDbValue =
+  (typeof UserRoleDbValues)[keyof typeof UserRoleDbValues];
 
 export class UserRole {
   private constructor(private readonly _value: UserRoleConstant) {}

@@ -1,9 +1,9 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 
 import { listTasks } from "../../application/service/tasks.js";
+import { authMiddleware } from "../auth/middleware.js";
 import type { Context } from "../context.js";
 import { listTasksRoute } from "../schemas/tasks.js";
-import { authMiddleware } from "../auth/middleware.js";
 
 const app = new OpenAPIHono<Context>();
 

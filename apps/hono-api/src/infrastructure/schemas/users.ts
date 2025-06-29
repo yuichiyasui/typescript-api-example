@@ -100,7 +100,10 @@ export const LoginUserResponseSchema = z.object({
     }),
     role: z
       .enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN])
-      .openapi({ description: "ユーザーロール", example: UserRoleConstants.MEMBER }),
+      .openapi({
+        description: "ユーザーロール",
+        example: UserRoleConstants.MEMBER,
+      }),
   }),
 });
 
