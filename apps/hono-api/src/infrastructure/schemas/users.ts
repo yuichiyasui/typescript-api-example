@@ -4,7 +4,12 @@ import { createRoute } from "@hono/zod-openapi";
 export const RegisterUserRequestSchema = z.object({
   name: z.string().min(1).openapi({ description: "ユーザー名", example: "田中太郎" }),
   email: z.string().email().openapi({ description: "メールアドレス", example: "tanaka@example.com" }),
-  password: z.string().min(8).openapi({ description: "パスワード", example: "StrongPassword123!" }),
+  password: z.string().min(8).openapi({ 
+    description: "パスワード（8文字以上128文字以下、大文字・小文字・数字・特殊文字を含む）", 
+    example: "StrongPassword123!",
+    minLength: 8,
+    maxLength: 128
+  }),
 });
 
 export const RegisterUserResponseSchema = z.object({
@@ -20,7 +25,16 @@ export const registerUserRoute = createRoute({
   path: "/register",
   tags: ["Users"],
   summary: "ユーザー登録",
-  description: "新しいユーザーを登録します",
+  description: `新しいユーザーを登録します。
+
+パスワード要件:
+- 8文字以上128文字以下
+- 大文字を1文字以上含む
+- 小文字を1文字以上含む  
+- 数字を1文字以上含む
+- 特殊文字を1文字以上含む (!@#$%^&*()_+-=[]{};"\\|,.<>/?)
+
+新しいユーザーはデフォルトで「member」ロールが割り当てられます。`,
   request: {
     body: {
       content: {
@@ -46,7 +60,7 @@ export const registerUserRoute = createRoute({
           schema: RegisterUserErrorResponseSchema,
         },
       },
-      description: "バリデーションエラー",
+      description: "バリデーションエラー（パスワード要件違反、メールアドレス重複など）",
     },
   },
 });

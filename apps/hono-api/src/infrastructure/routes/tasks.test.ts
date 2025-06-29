@@ -30,8 +30,21 @@ describe("GET /tasks", () => {
       ]),
     };
 
+    const mockLogger = {
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      child: vi.fn().mockReturnThis(),
+      level: "info",
+      fatal: vi.fn(),
+      debug: vi.fn(),
+      trace: vi.fn(),
+      silent: vi.fn(),
+    } as any;
+
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
+      c.set("logger", mockLogger);
       return next();
     });
 
@@ -49,18 +62,10 @@ describe("GET /tasks", () => {
         {
           id: "task1",
           name: "Test Task 1",
-          createdBy: "user1",
-          updatedBy: "user1",
-          createdAt: "2024-01-01T00:00:00.000Z",
-          updatedAt: "2024-01-01T00:00:00.000Z",
         },
         {
           id: "task2",
           name: "Test Task 2",
-          createdBy: "user2",
-          updatedBy: "user2",
-          createdAt: "2024-01-02T00:00:00.000Z",
-          updatedAt: "2024-01-02T00:00:00.000Z",
         },
       ],
     });
@@ -75,8 +80,21 @@ describe("GET /tasks", () => {
       findAll: vi.fn().mockReturnValue([]),
     };
 
+    const mockLogger = {
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      child: vi.fn().mockReturnThis(),
+      level: "info",
+      fatal: vi.fn(),
+      debug: vi.fn(),
+      trace: vi.fn(),
+      silent: vi.fn(),
+    } as any;
+
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
+      c.set("logger", mockLogger);
       return next();
     });
 
