@@ -1,0 +1,35 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "generate-api": "orval"
+  },
+  "dependencies": {
+    "@conform-to/react": "1.7.2",
+    "@conform-to/zod": "1.7.2",
+    "next": "15.3.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "3.25.67"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-api-example/eslint-config": "workspace:*",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "orval": "7.10.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
