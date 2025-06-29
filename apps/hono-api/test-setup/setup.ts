@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 
 // Logger module をグローバルでモック化
-vi.mock("../infrastructure/logger.js", () => ({
+vi.mock("../src/infrastructure/logger.ts", () => ({
   logger: {
     info: vi.fn(),
     warn: vi.fn(),
