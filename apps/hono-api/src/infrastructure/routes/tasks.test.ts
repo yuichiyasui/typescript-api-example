@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { describe, expect, it, vi } from "vitest";
 
 import type { Context } from "../context.js";
+import { logger } from "../logger.js";
 
 import { tasksRoutes } from "./tasks.js";
 
@@ -30,21 +31,9 @@ describe("GET /tasks", () => {
       ]),
     };
 
-    const mockLogger = {
-      info: vi.fn(),
-      warn: vi.fn(),
-      error: vi.fn(),
-      child: vi.fn().mockReturnThis(),
-      level: "info",
-      fatal: vi.fn(),
-      debug: vi.fn(),
-      trace: vi.fn(),
-      silent: vi.fn(),
-    } as any;
-
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
-      c.set("logger", mockLogger);
+      c.set("logger", logger);
       return next();
     });
 
@@ -80,21 +69,9 @@ describe("GET /tasks", () => {
       findAll: vi.fn().mockReturnValue([]),
     };
 
-    const mockLogger = {
-      info: vi.fn(),
-      warn: vi.fn(),
-      error: vi.fn(),
-      child: vi.fn().mockReturnThis(),
-      level: "info",
-      fatal: vi.fn(),
-      debug: vi.fn(),
-      trace: vi.fn(),
-      silent: vi.fn(),
-    } as any;
-
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
-      c.set("logger", mockLogger);
+      c.set("logger", logger);
       return next();
     });
 
