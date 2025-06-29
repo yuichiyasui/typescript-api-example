@@ -5,7 +5,7 @@ HonoフレームワークとDrizzle ORM、SQLite/libsqlを使用したREST API�
 ## 機能
 
 - ユーザー登録・ログイン・ログアウト
-- JWT認証（アクセストークン・リフレッシュトークン）
+- JWT認証（アクセストークン30分・リフレッシュトークン30日）
 - タスク管理API
 - OpenAPI仕様書（Swagger UI）
 - TypeScript完全対応
@@ -104,7 +104,7 @@ pnpm dev
 
 1. ユーザー登録: `POST /users/register`
 2. ログイン: `POST /users/login`
-   - 成功時、アクセストークン（30分有効）とリフレッシュトークン（7日有効）がHTTPOnlyクッキーで設定されます
+   - 成功時、アクセストークン（30分有効）とリフレッシュトークン（30日有効）がHTTPOnlyクッキーで設定されます
 3. 認証が必要なAPIへのアクセス
    - クッキーのアクセストークンが自動的に検証されます
 4. ログアウト: `POST /users/logout`

@@ -89,7 +89,7 @@ export const loginUser = async (
   if (!user) {
     return {
       success: false,
-      errors: ["Invalid email or password"],
+      errors: ["メールアドレスまたはパスワードが正しくありません"],
     };
   }
 
@@ -97,7 +97,7 @@ export const loginUser = async (
   if (!isValidPassword) {
     return {
       success: false,
-      errors: ["Invalid email or password"],
+      errors: ["メールアドレスまたはパスワードが正しくありません"],
     };
   }
 

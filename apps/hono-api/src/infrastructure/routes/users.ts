@@ -64,7 +64,7 @@ app.openapi(loginUserRoute, async (c) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      maxAge: 7 * 24 * 60 * 60,
+      maxAge: 30 * 24 * 60 * 60,
     });
 
     logger.info({ userId: result.user.id }, "User logged in successfully");

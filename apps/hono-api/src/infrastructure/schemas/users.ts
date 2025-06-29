@@ -113,7 +113,7 @@ export const loginUserRoute = createRoute({
   summary: "ユーザーログイン",
   description: `ユーザーのログインを行います。
 
-認証に成功すると、アクセストークン（30分有効）とリフレッシュトークン（7日有効）が
+認証に成功すると、アクセストークン（30分有効）とリフレッシュトークン（30日有効）が
 HTTPOnlyクッキーとして設定されます。`,
   request: {
     body: {

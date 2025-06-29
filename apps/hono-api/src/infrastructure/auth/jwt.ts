@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import type { JwtPayload } from "jsonwebtoken";
+import { z } from "zod";
 
 import { env } from "../env.js";
 
@@ -14,13 +14,28 @@ export interface RefreshTokenPayload {
   tokenVersion: number;
 }
 
+const TokenPayloadSchema = z.object({
+  userId: z.string(),
+  email: z.string().email(),
+  role: z.string(),
+  iat: z.number().optional(),
+  exp: z.number().optional(),
+});
+
+const RefreshTokenPayloadSchema = z.object({
+  userId: z.string(),
+  tokenVersion: z.number(),
+  iat: z.number().optional(),
+  exp: z.number().optional(),
+});
+
 export interface TokenPair {
   accessToken: string;
   refreshToken: string;
 }
 
 const ACCESS_TOKEN_EXPIRES_IN = "30m";
-const REFRESH_TOKEN_EXPIRES_IN = "7d";
+const REFRESH_TOKEN_EXPIRES_IN = "30d";
 
 export const generateTokenPair = (
   payload: TokenPayload,
@@ -44,11 +59,12 @@ export const generateTokenPair = (
 
 export const verifyAccessToken = (token: string): TokenPayload | null => {
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload & TokenPayload;
+    const decoded = jwt.verify(token, env.JWT_SECRET);
+    const validatedPayload = TokenPayloadSchema.parse(decoded);
     return {
-      userId: decoded.userId,
-      email: decoded.email,
-      role: decoded.role,
+      userId: validatedPayload.userId,
+      email: validatedPayload.email,
+      role: validatedPayload.role,
     };
   } catch {
     return null;
@@ -59,11 +75,11 @@ export const verifyRefreshToken = (
   token: string,
 ): RefreshTokenPayload | null => {
   try {
-    const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload &
-      RefreshTokenPayload;
+    const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET);
+    const validatedPayload = RefreshTokenPayloadSchema.parse(decoded);
     return {
-      userId: decoded.userId,
-      tokenVersion: decoded.tokenVersion,
+      userId: validatedPayload.userId,
+      tokenVersion: validatedPayload.tokenVersion,
     };
   } catch {
     return null;
