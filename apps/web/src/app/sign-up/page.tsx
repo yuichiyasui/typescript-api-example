@@ -23,7 +23,6 @@ const signUpSchema = z
 export default function SignUpPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState("");
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
@@ -31,46 +30,28 @@ export default function SignUpPage() {
     },
     async onSubmit(event, { formData }) {
       event.preventDefault();
+      const submission = parseWithZod(formData, { schema: signUpSchema });
+      if (submission.status !== "success") {
+        return submission.reply();
+      }
+
       setIsLoading(true);
-      setSuccess("");
 
       try {
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const password = formData.get("password");
-
-        if (
-          !name ||
-          !email ||
-          !password ||
-          typeof name !== "string" ||
-          typeof email !== "string" ||
-          typeof password !== "string"
-        ) {
-          return;
-        }
-
-        const response = await postUsersRegister(
+        await postUsersRegister(
           {
-            name,
-            email,
-            password,
+            name: submission.value.name,
+            email: submission.value.email,
+            password: submission.value.password,
           },
           {
             credentials: "include",
           },
         );
 
-        if (response.status === 200) {
-          setSuccess("ユーザー登録が完了しました。ログイン画面に移動します...");
-          form.reset();
-          // 2秒後にログイン画面に遷移
-          setTimeout(() => {
-            router.push("/sign-in");
-          }, 2000);
-        }
+        router.push("/sign-in");
       } catch {
-        // エラー時の処理
+        return submission.reply();
       } finally {
         setIsLoading(false);
       }
@@ -209,10 +190,6 @@ export default function SignUpPage() {
             <div className="text-red-600 text-sm text-center">
               {form.errors.join(", ")}
             </div>
-          )}
-
-          {success && (
-            <div className="text-green-600 text-sm text-center">{success}</div>
           )}
 
           <div>

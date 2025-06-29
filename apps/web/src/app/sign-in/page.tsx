@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
-import { postUsersLogin } from "../../lib/api";
+import { postUsersLogin } from "@/lib/api";
 
 const signInSchema = z.object({
   email: z.string().email("有効なメールアドレスを入力してください"),
@@ -16,7 +16,6 @@ const signInSchema = z.object({
 export default function SignInPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState("");
 
   const [form, fields] = useForm({
     onValidate({ formData }) {
@@ -24,42 +23,27 @@ export default function SignInPage() {
     },
     async onSubmit(event, { formData }) {
       event.preventDefault();
+      const submission = parseWithZod(formData, { schema: signInSchema });
+      if (submission.status !== "success") {
+        return submission.reply();
+      }
+
       setIsLoading(true);
-      setSuccess("");
 
       try {
-        const email = formData.get("email");
-        const password = formData.get("password");
-
-        if (
-          !email ||
-          !password ||
-          typeof email !== "string" ||
-          typeof password !== "string"
-        ) {
-          return;
-        }
-
-        const response = await postUsersLogin(
+        await postUsersLogin(
           {
-            email,
-            password,
+            email: submission.value.email,
+            password: submission.value.password,
           },
           {
             credentials: "include",
           },
         );
 
-        if (response.status === 200) {
-          setSuccess("ログインしました。トップページに移動します...");
-          form.reset();
-          // 2秒後にトップページに遷移
-          setTimeout(() => {
-            router.push("/");
-          }, 2000);
-        }
+        router.push("/");
       } catch {
-        // エラー時の処理
+        return submission.reply();
       } finally {
         setIsLoading(false);
       }
@@ -133,10 +117,6 @@ export default function SignInPage() {
             <div className="text-red-600 text-sm text-center">
               {form.errors.join(", ")}
             </div>
-          )}
-
-          {success && (
-            <div className="text-green-600 text-sm text-center">{success}</div>
           )}
 
           <div>
