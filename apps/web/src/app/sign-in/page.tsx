@@ -5,7 +5,7 @@ import { parseWithZod } from "@conform-to/zod";
 import { useState } from "react";
 import { z } from "zod";
 
-import { postUsersLogin } from "../../lib/api.js";
+import { postUsersLogin } from "../../lib/api";
 
 const signInSchema = z.object({
   email: z.string().email("有効なメールアドレスを入力してください"),
@@ -79,12 +79,20 @@ export default function SignInPage() {
               </label>
               <input
                 {...getInputProps(fields.email, { type: "email" })}
+                autoComplete="email"
+                aria-invalid={!!fields.email.errors}
+                aria-errormessage={fields.email.errorId}
+                aria-required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.email.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.email.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.email.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
 
@@ -97,12 +105,20 @@ export default function SignInPage() {
               </label>
               <input
                 {...getInputProps(fields.password, { type: "password" })}
+                autoComplete="current-password"
+                aria-invalid={!!fields.password.errors}
+                aria-errormessage={fields.password.errorId}
+                aria-required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.password.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.password.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.password.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { cors } from "hono/cors";
 
 import type { Context } from "./context.js";
 import { env } from "./env.js";
@@ -12,6 +13,16 @@ import { tasksRoutes } from "./routes/tasks.js";
 import { usersRoutes } from "./routes/users.js";
 
 const app = new OpenAPIHono<Context>();
+
+app.use(
+  "*",
+  cors({
+    origin: ["http://localhost:4000"], // Web frontend URL
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+);
 
 app.use("*", traceIdMiddleware);
 

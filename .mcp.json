@@ -5,6 +5,17 @@
       "command": "npx",
       "args": ["@eslint/mcp@latest"],
       "env": {}
+    },
+    "playwright": {
+      "type": "stdio",
+      "url": "http://localhost:8931/sse",
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--config",
+        "./playwright-config.json"
+      ],
+      "env": {}
     }
   }
 }

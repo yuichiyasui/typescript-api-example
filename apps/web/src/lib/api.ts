@@ -59,7 +59,6 @@ export type PostUsersLoginBody = {
 export type PostUsersLogin200UserRole =
   (typeof PostUsersLogin200UserRole)[keyof typeof PostUsersLogin200UserRole];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostUsersLogin200UserRole = {
   MEMBER: "MEMBER",
   ADMIN: "ADMIN",

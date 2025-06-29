@@ -5,7 +5,7 @@ import { parseWithZod } from "@conform-to/zod";
 import { useState } from "react";
 import { z } from "zod";
 
-import { postUsersRegister } from "../../lib/api.js";
+import { postUsersRegister } from "../../lib/api";
 
 const signUpSchema = z
   .object({
@@ -90,12 +90,19 @@ export default function SignUpPage() {
               </label>
               <input
                 {...getInputProps(fields.name, { type: "text" })}
+                aria-invalid={!!fields.name.errors}
+                aria-errormessage={fields.name.errorId}
+                aria-required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.name.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.name.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.name.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
 
@@ -108,12 +115,20 @@ export default function SignUpPage() {
               </label>
               <input
                 {...getInputProps(fields.email, { type: "email" })}
+                autoComplete="email"
+                aria-invalid={!!fields.email.errors}
+                aria-errormessage={fields.email.errorId}
+                aria-required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.email.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.email.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.email.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
 
@@ -126,12 +141,31 @@ export default function SignUpPage() {
               </label>
               <input
                 {...getInputProps(fields.password, { type: "password" })}
+                autoComplete="new-password"
+                aria-invalid={!!fields.password.errors}
+                aria-errormessage={fields.password.errorId}
+                aria-required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
+              <div className="text-xs text-gray-500 mt-1">
+                <p>パスワードは以下の条件を満たす必要があります：</p>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>8文字以上128文字以下</li>
+                  <li>大文字・小文字・数字・特殊文字をそれぞれ1文字以上含む</li>
+                  <li>
+                    使用可能な特殊文字: ! @ # $ % ^ & * ( ) _ + - = [ ] {`{`}{" "}
+                    {`}`} ; &apos; : &quot; \ | , . &lt; &gt; / ?
+                  </li>
+                </ul>
+              </div>
               {fields.password.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.password.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.password.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
 
@@ -143,13 +177,24 @@ export default function SignUpPage() {
                 パスワード確認
               </label>
               <input
-                {...getInputProps(fields.confirmPassword, { type: "password" })}
+                {...getInputProps(fields.confirmPassword, {
+                  type: "password",
+                  ariaAttributes: true,
+                })}
+                aria-invalid={!!fields.confirmPassword.errors}
+                aria-errormessage={fields.confirmPassword.errorId}
+                aria-required
+                autoComplete="new-password"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.confirmPassword.errors && (
-                <div className="text-red-600 text-sm mt-1">
+                <p
+                  role="alert"
+                  id={fields.confirmPassword.errorId}
+                  className="text-red-600 text-sm mt-1"
+                >
                   {fields.confirmPassword.errors.join(", ")}
-                </div>
+                </p>
               )}
             </div>
           </div>
