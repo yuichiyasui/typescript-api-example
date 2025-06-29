@@ -93,7 +93,7 @@ export default function SignUpPage() {
                 aria-invalid={!!fields.name.errors}
                 aria-errormessage={fields.name.errorId}
                 aria-required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.name.errors && (
                 <p
@@ -119,7 +119,7 @@ export default function SignUpPage() {
                 aria-invalid={!!fields.email.errors}
                 aria-errormessage={fields.email.errorId}
                 aria-required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.email.errors && (
                 <p
@@ -145,7 +145,7 @@ export default function SignUpPage() {
                 aria-invalid={!!fields.password.errors}
                 aria-errormessage={fields.password.errorId}
                 aria-required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               <div className="text-xs text-gray-500 mt-1">
                 <p>パスワードは以下の条件を満たす必要があります：</p>
@@ -185,7 +185,7 @@ export default function SignUpPage() {
                 aria-errormessage={fields.confirmPassword.errorId}
                 aria-required
                 autoComplete="new-password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               {fields.confirmPassword.errors && (
                 <p
