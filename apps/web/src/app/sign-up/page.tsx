@@ -5,6 +5,8 @@ import { parseWithZod } from "@conform-to/zod";
 import { useState } from "react";
 import { z } from "zod";
 
+import { postUsersRegister } from "../../lib/api.js";
+
 const signUpSchema = z.object({
   name: z.string().min(1, "名前を入力してください"),
   email: z.string().email("有効なメールアドレスを入力してください"),
@@ -29,24 +31,25 @@ export default function SignUpPage() {
       setSuccess("");
 
       try {
-        const response = await fetch("http://localhost:3000/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const name = formData.get("name");
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        if (!name || !email || !password || typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
+          return;
+        }
+
+        const response = await postUsersRegister({
+          name,
+          email,
+          password,
+        }, {
           credentials: "include",
-          body: JSON.stringify({
-            name: formData.get("name"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-          }),
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
           setSuccess("ユーザー登録が完了しました");
           form.reset();
-        } else {
-          await response.json();
         }
       } catch {
         // エラー時の処理

@@ -5,6 +5,8 @@ import { parseWithZod } from "@conform-to/zod";
 import { useState } from "react";
 import { z } from "zod";
 
+import { postUsersLogin } from "../../lib/api.js";
+
 const signInSchema = z.object({
   email: z.string().email("有効なメールアドレスを入力してください"),
   password: z.string().min(1, "パスワードを入力してください"),
@@ -24,23 +26,23 @@ export default function SignInPage() {
       setSuccess("");
 
       try {
-        const response = await fetch("http://localhost:3000/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+          return;
+        }
+
+        const response = await postUsersLogin({
+          email,
+          password,
+        }, {
           credentials: "include",
-          body: JSON.stringify({
-            email: formData.get("email"),
-            password: formData.get("password"),
-          }),
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
           setSuccess("ログインしました");
           form.reset();
-        } else {
-          await response.json();
         }
       } catch {
         // エラー時の処理

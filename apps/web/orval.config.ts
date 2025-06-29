@@ -6,6 +6,7 @@ export default {
       client: "fetch",
       mode: "single",
       clean: true,
+      baseUrl: "http://localhost:3000",
     },
   },
 };
