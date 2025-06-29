@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { describe, expect, it, vi } from "vitest";
 
 import type { Context } from "../context.js";
+import { logger } from "../logger.js";
 
 import { tasksRoutes } from "./tasks.js";
 
@@ -32,6 +33,7 @@ describe("GET /tasks", () => {
 
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
+      c.set("logger", logger);
       return next();
     });
 
@@ -49,18 +51,10 @@ describe("GET /tasks", () => {
         {
           id: "task1",
           name: "Test Task 1",
-          createdBy: "user1",
-          updatedBy: "user1",
-          createdAt: "2024-01-01T00:00:00.000Z",
-          updatedAt: "2024-01-01T00:00:00.000Z",
         },
         {
           id: "task2",
           name: "Test Task 2",
-          createdBy: "user2",
-          updatedBy: "user2",
-          createdAt: "2024-01-02T00:00:00.000Z",
-          updatedAt: "2024-01-02T00:00:00.000Z",
         },
       ],
     });
@@ -77,6 +71,7 @@ describe("GET /tasks", () => {
 
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
+      c.set("logger", logger);
       return next();
     });
 
