@@ -2,6 +2,7 @@
 
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -20,6 +21,7 @@ const signUpSchema = z
   });
 
 export default function SignUpPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState("");
 
@@ -60,8 +62,12 @@ export default function SignUpPage() {
         );
 
         if (response.status === 200) {
-          setSuccess("ユーザー登録が完了しました");
+          setSuccess("ユーザー登録が完了しました。ログイン画面に移動します...");
           form.reset();
+          // 2秒後にログイン画面に遷移
+          setTimeout(() => {
+            router.push("/sign-in");
+          }, 2000);
         }
       } catch {
         // エラー時の処理
