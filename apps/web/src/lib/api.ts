@@ -56,13 +56,13 @@ export type PostUsersLoginBody = {
 /**
  * ユーザーロール
  */
-export type PostUsersLogin200UserRole = typeof PostUsersLogin200UserRole[keyof typeof PostUsersLogin200UserRole];
-
+export type PostUsersLogin200UserRole =
+  (typeof PostUsersLogin200UserRole)[keyof typeof PostUsersLogin200UserRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostUsersLogin200UserRole = {
-  MEMBER: 'MEMBER',
-  ADMIN: 'ADMIN',
+  MEMBER: "MEMBER",
+  ADMIN: "ADMIN",
 } as const;
 
 export type PostUsersLogin200User = {
@@ -95,42 +95,33 @@ export type PostUsersLogout200 = {
  * @summary すべてのタスクを取得
  */
 export type getTasksResponse200 = {
-  data: GetTasks200
-  status: 200
-}
-    
+  data: GetTasks200;
+  status: 200;
+};
+
 export type getTasksResponseComposite = getTasksResponse200;
-    
+
 export type getTasksResponse = getTasksResponseComposite & {
   headers: Headers;
-}
+};
 
 export const getGetTasksUrl = () => {
+  return `http://localhost:3000/tasks`;
+};
 
-
-  
-
-  return `http://localhost:3000/tasks`
-}
-
-export const getTasks = async ( options?: RequestInit): Promise<getTasksResponse> => {
-  
-  const res = await fetch(getGetTasksUrl(),
-  {      
+export const getTasks = async (
+  options?: RequestInit,
+): Promise<getTasksResponse> => {
+  const res = await fetch(getGetTasksUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-)
+    method: "GET",
+  });
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data: getTasksResponse['data'] = body ? JSON.parse(body) : {}
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: getTasksResponse["data"] = body ? JSON.parse(body) : {};
 
-  return { data, status: res.status, headers: res.headers } as getTasksResponse
-}
-
-
+  return { data, status: res.status, headers: res.headers } as getTasksResponse;
+};
 
 /**
  * 新しいユーザーを登録します。
@@ -146,48 +137,47 @@ export const getTasks = async ( options?: RequestInit): Promise<getTasksResponse
  * @summary ユーザー登録
  */
 export type postUsersRegisterResponse200 = {
-  data: PostUsersRegister200
-  status: 200
-}
+  data: PostUsersRegister200;
+  status: 200;
+};
 
 export type postUsersRegisterResponse400 = {
-  data: PostUsersRegister400
-  status: 400
-}
-    
-export type postUsersRegisterResponseComposite = postUsersRegisterResponse200 | postUsersRegisterResponse400;
-    
+  data: PostUsersRegister400;
+  status: 400;
+};
+
+export type postUsersRegisterResponseComposite =
+  | postUsersRegisterResponse200
+  | postUsersRegisterResponse400;
+
 export type postUsersRegisterResponse = postUsersRegisterResponseComposite & {
   headers: Headers;
-}
+};
 
 export const getPostUsersRegisterUrl = () => {
+  return `http://localhost:3000/users/register`;
+};
 
-
-  
-
-  return `http://localhost:3000/users/register`
-}
-
-export const postUsersRegister = async (postUsersRegisterBody: PostUsersRegisterBody, options?: RequestInit): Promise<postUsersRegisterResponse> => {
-  
-  const res = await fetch(getPostUsersRegisterUrl(),
-  {      
+export const postUsersRegister = async (
+  postUsersRegisterBody: PostUsersRegisterBody,
+  options?: RequestInit,
+): Promise<postUsersRegisterResponse> => {
+  const res = await fetch(getPostUsersRegisterUrl(), {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postUsersRegisterBody,)
-  }
-)
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postUsersRegisterBody),
+  });
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data: postUsersRegisterResponse['data'] = body ? JSON.parse(body) : {}
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postUsersRegisterResponse["data"] = body ? JSON.parse(body) : {};
 
-  return { data, status: res.status, headers: res.headers } as postUsersRegisterResponse
-}
-
-
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postUsersRegisterResponse;
+};
 
 /**
  * ユーザーのログインを行います。
@@ -197,85 +187,81 @@ HTTPOnlyクッキーとして設定されます。
  * @summary ユーザーログイン
  */
 export type postUsersLoginResponse200 = {
-  data: PostUsersLogin200
-  status: 200
-}
+  data: PostUsersLogin200;
+  status: 200;
+};
 
 export type postUsersLoginResponse401 = {
-  data: PostUsersLogin401
-  status: 401
-}
-    
-export type postUsersLoginResponseComposite = postUsersLoginResponse200 | postUsersLoginResponse401;
-    
+  data: PostUsersLogin401;
+  status: 401;
+};
+
+export type postUsersLoginResponseComposite =
+  | postUsersLoginResponse200
+  | postUsersLoginResponse401;
+
 export type postUsersLoginResponse = postUsersLoginResponseComposite & {
   headers: Headers;
-}
+};
 
 export const getPostUsersLoginUrl = () => {
+  return `http://localhost:3000/users/login`;
+};
 
-
-  
-
-  return `http://localhost:3000/users/login`
-}
-
-export const postUsersLogin = async (postUsersLoginBody: PostUsersLoginBody, options?: RequestInit): Promise<postUsersLoginResponse> => {
-  
-  const res = await fetch(getPostUsersLoginUrl(),
-  {      
+export const postUsersLogin = async (
+  postUsersLoginBody: PostUsersLoginBody,
+  options?: RequestInit,
+): Promise<postUsersLoginResponse> => {
+  const res = await fetch(getPostUsersLoginUrl(), {
     ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postUsersLoginBody,)
-  }
-)
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(postUsersLoginBody),
+  });
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data: postUsersLoginResponse['data'] = body ? JSON.parse(body) : {}
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postUsersLoginResponse["data"] = body ? JSON.parse(body) : {};
 
-  return { data, status: res.status, headers: res.headers } as postUsersLoginResponse
-}
-
-
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postUsersLoginResponse;
+};
 
 /**
  * ユーザーのログアウトを行い、認証クッキーをクリアします。
  * @summary ユーザーログアウト
  */
 export type postUsersLogoutResponse200 = {
-  data: PostUsersLogout200
-  status: 200
-}
-    
+  data: PostUsersLogout200;
+  status: 200;
+};
+
 export type postUsersLogoutResponseComposite = postUsersLogoutResponse200;
-    
+
 export type postUsersLogoutResponse = postUsersLogoutResponseComposite & {
   headers: Headers;
-}
+};
 
 export const getPostUsersLogoutUrl = () => {
+  return `http://localhost:3000/users/logout`;
+};
 
-
-  
-
-  return `http://localhost:3000/users/logout`
-}
-
-export const postUsersLogout = async ( options?: RequestInit): Promise<postUsersLogoutResponse> => {
-  
-  const res = await fetch(getPostUsersLogoutUrl(),
-  {      
+export const postUsersLogout = async (
+  options?: RequestInit,
+): Promise<postUsersLogoutResponse> => {
+  const res = await fetch(getPostUsersLogoutUrl(), {
     ...options,
-    method: 'POST'
-    
-    
-  }
-)
+    method: "POST",
+  });
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data: postUsersLogoutResponse['data'] = body ? JSON.parse(body) : {}
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+  const data: postUsersLogoutResponse["data"] = body ? JSON.parse(body) : {};
 
-  return { data, status: res.status, headers: res.headers } as postUsersLogoutResponse
-}
+  return {
+    data,
+    status: res.status,
+    headers: res.headers,
+  } as postUsersLogoutResponse;
+};

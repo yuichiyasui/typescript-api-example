@@ -98,12 +98,10 @@ export const LoginUserResponseSchema = z.object({
       description: "メールアドレス",
       example: "tanaka@example.com",
     }),
-    role: z
-      .enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN])
-      .openapi({
-        description: "ユーザーロール",
-        example: UserRoleConstants.MEMBER,
-      }),
+    role: z.enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN]).openapi({
+      description: "ユーザーロール",
+      example: UserRoleConstants.MEMBER,
+    }),
   }),
 });
 

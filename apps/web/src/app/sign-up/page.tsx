@@ -7,15 +7,17 @@ import { z } from "zod";
 
 import { postUsersRegister } from "../../lib/api.js";
 
-const signUpSchema = z.object({
-  name: z.string().min(1, "名前を入力してください"),
-  email: z.string().email("有効なメールアドレスを入力してください"),
-  password: z.string().min(8, "パスワードは8文字以上で入力してください"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "パスワードが一致しません",
-  path: ["confirmPassword"],
-});
+const signUpSchema = z
+  .object({
+    name: z.string().min(1, "名前を入力してください"),
+    email: z.string().email("有効なメールアドレスを入力してください"),
+    password: z.string().min(8, "パスワードは8文字以上で入力してください"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "パスワードが一致しません",
+    path: ["confirmPassword"],
+  });
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,17 +37,27 @@ export default function SignUpPage() {
         const email = formData.get("email");
         const password = formData.get("password");
 
-        if (!name || !email || !password || typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
+        if (
+          !name ||
+          !email ||
+          !password ||
+          typeof name !== "string" ||
+          typeof email !== "string" ||
+          typeof password !== "string"
+        ) {
           return;
         }
 
-        const response = await postUsersRegister({
-          name,
-          email,
-          password,
-        }, {
-          credentials: "include",
-        });
+        const response = await postUsersRegister(
+          {
+            name,
+            email,
+            password,
+          },
+          {
+            credentials: "include",
+          },
+        );
 
         if (response.status === 200) {
           setSuccess("ユーザー登録が完了しました");
@@ -70,7 +82,10 @@ export default function SignUpPage() {
         <form {...getFormProps(form)} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor={fields.name.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.name.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 名前
               </label>
               <input
@@ -85,7 +100,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor={fields.email.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.email.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 メールアドレス
               </label>
               <input
@@ -100,7 +118,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor={fields.password.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.password.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 パスワード
               </label>
               <input
@@ -115,7 +136,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor={fields.confirmPassword.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.confirmPassword.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 パスワード確認
               </label>
               <input

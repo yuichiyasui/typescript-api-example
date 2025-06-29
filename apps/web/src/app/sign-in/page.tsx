@@ -29,16 +29,24 @@ export default function SignInPage() {
         const email = formData.get("email");
         const password = formData.get("password");
 
-        if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+        if (
+          !email ||
+          !password ||
+          typeof email !== "string" ||
+          typeof password !== "string"
+        ) {
           return;
         }
 
-        const response = await postUsersLogin({
-          email,
-          password,
-        }, {
-          credentials: "include",
-        });
+        const response = await postUsersLogin(
+          {
+            email,
+            password,
+          },
+          {
+            credentials: "include",
+          },
+        );
 
         if (response.status === 200) {
           setSuccess("ログインしました");
@@ -63,7 +71,10 @@ export default function SignInPage() {
         <form {...getFormProps(form)} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor={fields.email.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.email.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 メールアドレス
               </label>
               <input
@@ -78,7 +89,10 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label htmlFor={fields.password.id} className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor={fields.password.id}
+                className="block text-sm font-medium text-gray-700"
+              >
                 パスワード
               </label>
               <input
