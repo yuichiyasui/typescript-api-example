@@ -2,6 +2,7 @@
 
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -13,6 +14,7 @@ const signInSchema = z.object({
 });
 
 export default function SignInPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState("");
 
@@ -49,8 +51,12 @@ export default function SignInPage() {
         );
 
         if (response.status === 200) {
-          setSuccess("ログインしました");
+          setSuccess("ログインしました。トップページに移動します...");
           form.reset();
+          // 2秒後にトップページに遷移
+          setTimeout(() => {
+            router.push("/");
+          }, 2000);
         }
       } catch {
         // エラー時の処理
