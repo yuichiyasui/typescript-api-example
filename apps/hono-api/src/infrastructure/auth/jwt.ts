@@ -1,4 +1,4 @@
-import { sign, verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
 
 import { env } from "../env.js";
@@ -26,7 +26,7 @@ export const generateTokenPair = (
   payload: TokenPayload,
   tokenVersion: number = 1,
 ): TokenPair => {
-  const accessToken = sign(payload, env.JWT_SECRET, {
+  const accessToken = jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: ACCESS_TOKEN_EXPIRES_IN,
   });
 
@@ -35,7 +35,7 @@ export const generateTokenPair = (
     tokenVersion,
   };
 
-  const refreshToken = sign(refreshPayload, env.JWT_REFRESH_SECRET, {
+  const refreshToken = jwt.sign(refreshPayload, env.JWT_REFRESH_SECRET, {
     expiresIn: REFRESH_TOKEN_EXPIRES_IN,
   });
 
@@ -44,7 +44,7 @@ export const generateTokenPair = (
 
 export const verifyAccessToken = (token: string): TokenPayload | null => {
   try {
-    const decoded = verify(token, env.JWT_SECRET) as JwtPayload & TokenPayload;
+    const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload & TokenPayload;
     return {
       userId: decoded.userId,
       email: decoded.email,
@@ -59,7 +59,7 @@ export const verifyRefreshToken = (
   token: string,
 ): RefreshTokenPayload | null => {
   try {
-    const decoded = verify(token, env.JWT_REFRESH_SECRET) as JwtPayload &
+    const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload &
       RefreshTokenPayload;
     return {
       userId: decoded.userId,
