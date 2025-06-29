@@ -11,7 +11,7 @@ export class UsersRepository implements IUsersRepository {
       id: user.id,
       name: user.name,
       email: user.email,
-      password: user.password,
+      password: user.password.hashedValue,
       role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

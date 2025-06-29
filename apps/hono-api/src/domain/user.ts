@@ -1,5 +1,7 @@
 import { nanoid } from "nanoid";
 
+import { Password } from "./value/password.js";
+
 export type UserRole = "admin" | "member";
 
 export class User {
@@ -7,31 +9,33 @@ export class User {
     private readonly _id: string,
     private readonly _name: string,
     private readonly _email: string,
-    private readonly _password: string,
+    private readonly _password: Password,
     private readonly _role: UserRole,
     private readonly _createdAt: Date,
     private readonly _updatedAt: Date,
   ) {}
 
-  static create(
+  static async create(
     name: string,
     email: string,
-    hashedPassword: string,
+    plainPassword: string,
     role: UserRole = "member",
-  ): User {
+  ): Promise<User> {
     const now = new Date();
-    return new User(nanoid(), name, email, hashedPassword, role, now, now);
+    const password = await Password.create(plainPassword);
+    return new User(nanoid(), name, email, password, role, now, now);
   }
 
   static restore(
     id: string,
     name: string,
     email: string,
-    password: string,
+    hashedPassword: string,
     role: UserRole,
     createdAt: Date,
     updatedAt: Date,
   ): User {
+    const password = Password.restore(hashedPassword);
     return new User(id, name, email, password, role, createdAt, updatedAt);
   }
 
@@ -47,7 +51,7 @@ export class User {
     return this._email;
   }
 
-  get password(): string {
+  get password(): Password {
     return this._password;
   }
 
@@ -61,5 +65,9 @@ export class User {
 
   get updatedAt(): Date {
     return this._updatedAt;
+  }
+
+  async verifyPassword(plainPassword: string): Promise<boolean> {
+    return this._password.verify(plainPassword);
   }
 }

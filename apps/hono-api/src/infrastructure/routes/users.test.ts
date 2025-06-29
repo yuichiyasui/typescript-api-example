@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { describe, expect, it, vi } from "vitest";
 
 import type { Context } from "../context.js";
-import { User } from "../../domain/user.js";
 
 import { usersRoutes } from "./users.js";
 
@@ -61,7 +60,7 @@ describe("POST /users/register", () => {
   it("既存のメールアドレスでの登録は失敗する", async () => {
     const app = new Hono<Context>();
 
-    const existingUser = User.create("Existing User", "test@example.com", "hashedPassword");
+    const existingUser = { id: "existing-user" } as any;
 
     const mockUsersRepository = {
       save: vi.fn(),

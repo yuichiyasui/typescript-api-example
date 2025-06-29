@@ -4,30 +4,30 @@ import { User } from "./user.js";
 
 describe("User", () => {
   describe("create", () => {
-    it("新しいユーザーを作成する", () => {
-      const user = User.create("Test User", "test@example.com", "hashedPassword");
+    it("新しいユーザーを作成する", async () => {
+      const user = await User.create("Test User", "test@example.com", "StrongPassword123!");
 
       expect(user.id).toBeDefined();
       expect(typeof user.id).toBe("string");
       expect(user.id.length).toBeGreaterThan(0);
       expect(user.name).toBe("Test User");
       expect(user.email).toBe("test@example.com");
-      expect(user.password).toBe("hashedPassword");
+      expect(user.password).toBeDefined();
       expect(user.role).toBe("member");
       expect(user.createdAt).toBeInstanceOf(Date);
       expect(user.updatedAt).toBeInstanceOf(Date);
       expect(user.createdAt).toEqual(user.updatedAt);
     });
 
-    it("admin roleでユーザーを作成する", () => {
-      const user = User.create("Admin User", "admin@example.com", "hashedPassword", "admin");
+    it("admin roleでユーザーを作成する", async () => {
+      const user = await User.create("Admin User", "admin@example.com", "StrongPassword123!", "admin");
 
       expect(user.role).toBe("admin");
     });
 
-    it("異なるユーザーは異なるIDを持つ", () => {
-      const user1 = User.create("User 1", "user1@example.com", "hashedPassword");
-      const user2 = User.create("User 2", "user2@example.com", "hashedPassword");
+    it("異なるユーザーは異なるIDを持つ", async () => {
+      const user1 = await User.create("User 1", "user1@example.com", "StrongPassword123!");
+      const user2 = await User.create("User 2", "user2@example.com", "StrongPassword123!");
 
       expect(user1.id).not.toBe(user2.id);
     });
@@ -48,21 +48,37 @@ describe("User", () => {
       expect(user.id).toBe(id);
       expect(user.name).toBe(name);
       expect(user.email).toBe(email);
-      expect(user.password).toBe(password);
+      expect(user.password.hashedValue).toBe(password);
       expect(user.role).toBe(role);
       expect(user.createdAt).toBe(createdAt);
       expect(user.updatedAt).toBe(updatedAt);
     });
   });
 
+  describe("verifyPassword", () => {
+    it("正しいパスワードで検証が成功する", async () => {
+      const user = await User.create("Test User", "test@example.com", "StrongPassword123!");
+
+      const isValid = await user.verifyPassword("StrongPassword123!");
+      expect(isValid).toBe(true);
+    });
+
+    it("間違ったパスワードで検証が失敗する", async () => {
+      const user = await User.create("Test User", "test@example.com", "StrongPassword123!");
+
+      const isValid = await user.verifyPassword("WrongPassword123!");
+      expect(isValid).toBe(false);
+    });
+  });
+
   describe("getters", () => {
-    it("全てのプロパティにアクセスできる", () => {
-      const user = User.create("Test User", "test@example.com", "hashedPassword");
+    it("全てのプロパティにアクセスできる", async () => {
+      const user = await User.create("Test User", "test@example.com", "StrongPassword123!");
 
       expect(user.id).toBeDefined();
       expect(user.name).toBe("Test User");
       expect(user.email).toBe("test@example.com");
-      expect(user.password).toBe("hashedPassword");
+      expect(user.password).toBeDefined();
       expect(user.role).toBe("member");
       expect(user.createdAt).toBeDefined();
       expect(user.updatedAt).toBeDefined();

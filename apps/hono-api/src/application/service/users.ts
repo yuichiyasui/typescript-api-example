@@ -1,6 +1,6 @@
 import type { IUsersRepository } from "../../domain/interface/users-repository.js";
 import { User } from "../../domain/user.js";
-import { hashPassword, validatePassword } from "../../infrastructure/password.js";
+import { Password } from "../../domain/value/password.js";
 
 type Dependencies = {
   usersRepository: IUsersRepository;
@@ -28,7 +28,7 @@ export const registerUser = async (
 ): Promise<RegisterUserResponse> => {
   const { name, email, password } = params;
 
-  const passwordValidation = validatePassword(password);
+  const passwordValidation = Password.validate(password);
   if (!passwordValidation.isValid) {
     return {
       success: false,
@@ -44,8 +44,7 @@ export const registerUser = async (
     };
   }
 
-  const hashedPassword = await hashPassword(password);
-  const user = User.create(name, email, hashedPassword);
+  const user = await User.create(name, email, password);
 
   await deps.usersRepository.save(user);
 
