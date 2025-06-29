@@ -15,6 +15,13 @@
       "when": 1751155521362,
       "tag": "0001_worthless_millenium_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1751196823651,
+      "tag": "0002_brave_barracuda",
+      "breakpoints": true
     }
   ]
 }

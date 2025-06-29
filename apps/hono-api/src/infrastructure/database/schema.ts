@@ -5,7 +5,7 @@ export const users = sqliteTable("users", {
   name: text("name", { length: 255 }).notNull(),
   email: text("email", { length: 255 }).notNull().unique(),
   password: text("password", { length: 255 }).notNull(),
-  role: text("role", { length: 50 }).notNull().default("member"),
+  role: integer("role").notNull().default(1),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

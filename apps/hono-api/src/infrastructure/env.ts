@@ -1,4 +1,7 @@
+import { config } from "dotenv";
 import { z } from "zod";
+
+config();
 
 const envSchema = z.object({
   DATABASE_URL: z.string().default("file:./local.db"),
@@ -10,6 +13,8 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  JWT_SECRET: z.string().min(32),
+  JWT_REFRESH_SECRET: z.string().min(32),
 });
 
 export const env = envSchema.parse(process.env);
