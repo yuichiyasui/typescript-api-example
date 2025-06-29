@@ -1,7 +1,10 @@
 import type { IUsersRepository } from "../../domain/interface/users-repository.js";
 import { User } from "../../domain/user.js";
 import { Password } from "../../domain/value/password.js";
-import { generateTokenPair, type TokenPair } from "../../infrastructure/auth/jwt.js";
+import {
+  generateTokenPair,
+  type TokenPair,
+} from "../../infrastructure/auth/jwt.js";
 
 type Dependencies = {
   usersRepository: IUsersRepository;

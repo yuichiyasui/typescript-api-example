@@ -89,11 +89,13 @@ export const LoginUserRequestSchema = z.object({
 export const LoginUserResponseSchema = z.object({
   user: z.object({
     id: z.string().openapi({ description: "ユーザーID", example: "abc123" }),
-    name: z.string().openapi({ description: "ユーザー名", example: "田中太郎" }),
-    email: z
+    name: z
       .string()
-      .email()
-      .openapi({ description: "メールアドレス", example: "tanaka@example.com" }),
+      .openapi({ description: "ユーザー名", example: "田中太郎" }),
+    email: z.string().email().openapi({
+      description: "メールアドレス",
+      example: "tanaka@example.com",
+    }),
     role: z
       .string()
       .openapi({ description: "ユーザーロール", example: "member" }),

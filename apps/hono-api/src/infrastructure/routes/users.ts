@@ -3,7 +3,11 @@ import { setCookie, deleteCookie } from "hono/cookie";
 
 import { registerUser, loginUser } from "../../application/service/users.js";
 import type { Context } from "../context.js";
-import { registerUserRoute, loginUserRoute, logoutUserRoute } from "../schemas/users.js";
+import {
+  registerUserRoute,
+  loginUserRoute,
+  logoutUserRoute,
+} from "../schemas/users.js";
 
 const app = new OpenAPIHono<Context>();
 
