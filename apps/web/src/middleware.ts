@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
   // 認証が必要なパス
   const protectedPaths = ["/"];
-  
+
   // 認証が不要なパス（ログイン・登録画面など）
   const publicPaths = ["/sign-in", "/sign-up"];
-  
+
   const { pathname } = request.nextUrl;
-  
+
   // 静的ファイルやAPIルートは除外
   if (
     pathname.startsWith("/_next") ||
@@ -17,10 +17,10 @@ export function middleware(request: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  
+
   // アクセストークンの確認
   const accessToken = request.cookies.get("accessToken");
-  
+
   // 保護されたパスへのアクセス
   if (protectedPaths.includes(pathname)) {
     if (!accessToken) {
@@ -29,14 +29,14 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
   }
-  
+
   // ログイン済みユーザーが認証画面にアクセスした場合
   if (publicPaths.includes(pathname) && accessToken) {
     // トップページにリダイレクト
     const homeUrl = new URL("/", request.url);
     return NextResponse.redirect(homeUrl);
   }
-  
+
   return NextResponse.next();
 }
 
