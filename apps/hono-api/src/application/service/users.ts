@@ -1,6 +1,7 @@
 import type { IUsersRepository } from "../../domain/interface/users-repository.js";
 import { User } from "../../domain/user.js";
 import { Password } from "../../domain/value/password.js";
+import { generateTokenPair, type TokenPair } from "../../infrastructure/auth/jwt.js";
 
 type Dependencies = {
   usersRepository: IUsersRepository;
@@ -51,5 +52,66 @@ export const registerUser = async (
   return {
     success: true,
     userId: user.id,
+  };
+};
+
+export interface LoginUserParams {
+  email: string;
+  password: string;
+}
+
+export type LoginUserResponse =
+  | {
+      success: true;
+      tokens: TokenPair;
+      user: {
+        id: string;
+        name: string;
+        email: string;
+        role: string;
+      };
+    }
+  | {
+      success: false;
+      errors: string[];
+    };
+
+export const loginUser = async (
+  deps: Dependencies,
+  params: LoginUserParams,
+): Promise<LoginUserResponse> => {
+  const { email, password } = params;
+
+  const user = await deps.usersRepository.findByEmail(email);
+  if (!user) {
+    return {
+      success: false,
+      errors: ["Invalid email or password"],
+    };
+  }
+
+  const isValidPassword = await user.verifyPassword(password);
+  if (!isValidPassword) {
+    return {
+      success: false,
+      errors: ["Invalid email or password"],
+    };
+  }
+
+  const tokens = generateTokenPair({
+    userId: user.id,
+    email: user.email,
+    role: user.role,
+  });
+
+  return {
+    success: true,
+    tokens,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
   };
 };

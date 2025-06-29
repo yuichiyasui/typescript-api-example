@@ -74,3 +74,93 @@ export const registerUserRoute = createRoute({
     },
   },
 });
+
+export const LoginUserRequestSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .openapi({ description: "メールアドレス", example: "tanaka@example.com" }),
+  password: z
+    .string()
+    .min(1)
+    .openapi({ description: "パスワード", example: "StrongPassword123!" }),
+});
+
+export const LoginUserResponseSchema = z.object({
+  user: z.object({
+    id: z.string().openapi({ description: "ユーザーID", example: "abc123" }),
+    name: z.string().openapi({ description: "ユーザー名", example: "田中太郎" }),
+    email: z
+      .string()
+      .email()
+      .openapi({ description: "メールアドレス", example: "tanaka@example.com" }),
+    role: z
+      .string()
+      .openapi({ description: "ユーザーロール", example: "member" }),
+  }),
+});
+
+export const LoginUserErrorResponseSchema = z.object({
+  errors: z.array(z.string()).openapi({ description: "エラーメッセージ" }),
+});
+
+export const loginUserRoute = createRoute({
+  method: "post",
+  path: "/login",
+  tags: ["Users"],
+  summary: "ユーザーログイン",
+  description: `ユーザーのログインを行います。
+
+認証に成功すると、アクセストークン（30分有効）とリフレッシュトークン（7日有効）が
+HTTPOnlyクッキーとして設定されます。`,
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: LoginUserRequestSchema,
+        },
+      },
+      description: "ログイン情報",
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: LoginUserResponseSchema,
+        },
+      },
+      description: "ログイン成功",
+    },
+    401: {
+      content: {
+        "application/json": {
+          schema: LoginUserErrorResponseSchema,
+        },
+      },
+      description: "認証失敗（メールアドレスまたはパスワードが間違っています）",
+    },
+  },
+});
+
+export const LogoutUserResponseSchema = z.object({
+  message: z.string().openapi({ description: "ログアウト完了メッセージ" }),
+});
+
+export const logoutUserRoute = createRoute({
+  method: "post",
+  path: "/logout",
+  tags: ["Users"],
+  summary: "ユーザーログアウト",
+  description: "ユーザーのログアウトを行い、認証クッキーをクリアします。",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: LogoutUserResponseSchema,
+        },
+      },
+      description: "ログアウト成功",
+    },
+  },
+});
