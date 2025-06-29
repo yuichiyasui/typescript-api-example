@@ -1,8 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { Password } from "./value/password.js";
-
-export type UserRole = "admin" | "member";
+import { UserRole, type UserRoleDbValue } from "./value/role.js";
 
 export class User {
   constructor(
@@ -19,7 +18,7 @@ export class User {
     name: string,
     email: string,
     plainPassword: string,
-    role: UserRole = "member",
+    role: UserRole = UserRole.member(),
   ): Promise<User> {
     const now = new Date();
     const password = await Password.create(plainPassword);
@@ -31,11 +30,12 @@ export class User {
     name: string,
     email: string,
     hashedPassword: string,
-    role: UserRole,
+    roleDbValue: UserRoleDbValue,
     createdAt: Date,
     updatedAt: Date,
   ): User {
     const password = Password.restore(hashedPassword);
+    const role = UserRole.fromDbValue(roleDbValue);
     return new User(id, name, email, password, role, createdAt, updatedAt);
   }
 
@@ -57,6 +57,14 @@ export class User {
 
   get role(): UserRole {
     return this._role;
+  }
+
+  get roleValue(): string {
+    return this._role.value;
+  }
+
+  get roleDbValue(): UserRoleDbValue {
+    return this._role.dbValue;
   }
 
   get createdAt(): Date {

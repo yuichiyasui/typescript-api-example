@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
+import { UserRoleConstants } from "../../domain/value/role.js";
 import { env } from "../env.js";
 
 export interface TokenPayload {
@@ -17,7 +18,7 @@ export interface RefreshTokenPayload {
 const TokenPayloadSchema = z.object({
   userId: z.string(),
   email: z.string().email(),
-  role: z.string(),
+  role: z.enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN]),
   iat: z.number().optional(),
   exp: z.number().optional(),
 });

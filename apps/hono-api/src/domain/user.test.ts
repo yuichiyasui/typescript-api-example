@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { User } from "./user.js";
+import { UserRole, UserRoleDbValues } from "./value/role.js";
 
 describe("User", () => {
   describe("create", () => {
@@ -17,7 +18,7 @@ describe("User", () => {
       expect(user.name).toBe("Test User");
       expect(user.email).toBe("test@example.com");
       expect(user.password).toBeDefined();
-      expect(user.role).toBe("member");
+      expect(user.roleValue).toBe("MEMBER");
       expect(user.createdAt).toBeInstanceOf(Date);
       expect(user.updatedAt).toBeInstanceOf(Date);
       expect(user.createdAt).toEqual(user.updatedAt);
@@ -28,10 +29,10 @@ describe("User", () => {
         "Admin User",
         "admin@example.com",
         "StrongPassword123!",
-        "admin",
+        UserRole.admin(),
       );
 
-      expect(user.role).toBe("admin");
+      expect(user.roleValue).toBe("ADMIN");
     });
 
     it("異なるユーザーは異なるIDを持つ", async () => {
@@ -56,7 +57,7 @@ describe("User", () => {
       const name = "Test User";
       const email = "test@example.com";
       const password = "hashedPassword";
-      const role = "admin";
+      const roleDbValue = UserRoleDbValues.ADMIN;
       const createdAt = new Date("2024-01-01");
       const updatedAt = new Date("2024-01-02");
 
@@ -65,7 +66,7 @@ describe("User", () => {
         name,
         email,
         password,
-        role,
+        roleDbValue,
         createdAt,
         updatedAt,
       );
@@ -74,7 +75,7 @@ describe("User", () => {
       expect(user.name).toBe(name);
       expect(user.email).toBe(email);
       expect(user.password.hashedValue).toBe(password);
-      expect(user.role).toBe(role);
+      expect(user.roleValue).toBe("ADMIN");
       expect(user.createdAt).toBe(createdAt);
       expect(user.updatedAt).toBe(updatedAt);
     });
@@ -116,7 +117,7 @@ describe("User", () => {
       expect(user.name).toBe("Test User");
       expect(user.email).toBe("test@example.com");
       expect(user.password).toBeDefined();
-      expect(user.role).toBe("member");
+      expect(user.roleValue).toBe("MEMBER");
       expect(user.createdAt).toBeDefined();
       expect(user.updatedAt).toBeDefined();
     });

@@ -1,6 +1,7 @@
 import type { IUsersRepository } from "../../domain/interface/users-repository.js";
 import { User } from "../../domain/user.js";
 import { Password } from "../../domain/value/password.js";
+import type { UserRoleConstant } from "../../domain/value/role.js";
 import {
   generateTokenPair,
   type TokenPair,
@@ -71,7 +72,7 @@ export type LoginUserResponse =
         id: string;
         name: string;
         email: string;
-        role: string;
+        role: UserRoleConstant;
       };
     }
   | {
@@ -104,7 +105,7 @@ export const loginUser = async (
   const tokens = generateTokenPair({
     userId: user.id,
     email: user.email,
-    role: user.role,
+    role: user.roleValue,
   });
 
   return {
@@ -114,7 +115,7 @@ export const loginUser = async (
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      role: user.roleValue as UserRoleConstant,
     },
   };
 };

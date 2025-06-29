@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { createRoute } from "@hono/zod-openapi";
 
+import { UserRoleConstants } from "../../domain/value/role.js";
+
 export const RegisterUserRequestSchema = z.object({
   name: z
     .string()
@@ -97,8 +99,8 @@ export const LoginUserResponseSchema = z.object({
       example: "tanaka@example.com",
     }),
     role: z
-      .string()
-      .openapi({ description: "ユーザーロール", example: "member" }),
+      .enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN])
+      .openapi({ description: "ユーザーロール", example: UserRoleConstants.MEMBER }),
   }),
 });
 

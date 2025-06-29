@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 
 import type { IUsersRepository } from "../../domain/interface/users-repository.js";
-import { User, type UserRole } from "../../domain/user.js";
+import { User } from "../../domain/user.js";
+import type { UserRoleDbValue } from "../../domain/value/role.js";
 import { db } from "../database/connection.js";
 import { users } from "../database/schema.js";
 
@@ -12,7 +13,7 @@ export class UsersRepository implements IUsersRepository {
       name: user.name,
       email: user.email,
       password: user.password.hashedValue,
-      role: user.role,
+      role: user.roleDbValue,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     });
@@ -31,7 +32,7 @@ export class UsersRepository implements IUsersRepository {
       row.name,
       row.email,
       row.password,
-      row.role as UserRole,
+      row.role as UserRoleDbValue,
       new Date(row.createdAt),
       new Date(row.updatedAt),
     );
@@ -50,7 +51,7 @@ export class UsersRepository implements IUsersRepository {
       row.name,
       row.email,
       row.password,
-      row.role as UserRole,
+      row.role as UserRoleDbValue,
       new Date(row.createdAt),
       new Date(row.updatedAt),
     );
