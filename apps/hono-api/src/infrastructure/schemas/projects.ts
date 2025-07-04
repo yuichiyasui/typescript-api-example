@@ -19,6 +19,73 @@ export const CreateProjectRequestSchema = z.object({
     .openapi({ description: "プロジェクト名", example: "新しいプロジェクト" }),
 });
 
+export const PaginationSchema = z.object({
+  page: z
+    .number()
+    .int()
+    .min(1)
+    .openapi({ description: "ページ番号", example: 1 }),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .openapi({ description: "1ページあたりの件数", example: 10 }),
+  total: z
+    .number()
+    .int()
+    .min(0)
+    .openapi({ description: "総件数", example: 25 }),
+  totalPages: z
+    .number()
+    .int()
+    .min(0)
+    .openapi({ description: "総ページ数", example: 3 }),
+});
+
+export const PaginatedProjectsResponseSchema = z.object({
+  projects: z.array(ProjectSchema).openapi({ description: "プロジェクト一覧" }),
+  pagination: PaginationSchema.openapi({ description: "ページネーション情報" }),
+});
+
+export const getProjectsRoute = createRoute({
+  method: "get",
+  path: "/",
+  tags: ["Projects"],
+  summary: "参加しているプロジェクト一覧を取得",
+  description:
+    "ユーザーが参加しているプロジェクトの一覧をページネーション付きで取得します。",
+  request: {
+    query: z.object({
+      page: z.coerce
+        .number()
+        .int()
+        .default(1)
+        .transform(val => val <= 0 ? 1 : val)
+        .openapi({ description: "ページ番号", example: 1 }),
+      limit: z.coerce
+        .number()
+        .int()
+        .default(10)
+        .transform(val => val <= 0 ? 10 : val > 100 ? 100 : val)
+        .openapi({ description: "1ページあたりの件数", example: 10 }),
+    }),
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: PaginatedProjectsResponseSchema,
+        },
+      },
+      description: "プロジェクト一覧の取得に成功しました",
+    },
+    401: {
+      description: "認証が必要です",
+    },
+  },
+});
+
 export const createProjectRoute = createRoute({
   method: "post",
   path: "/",

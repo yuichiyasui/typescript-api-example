@@ -66,7 +66,10 @@ export const adminMiddleware: MiddlewareHandler<Context> = async (
   }
 
   if (!UserRole.isAdminRole(user.role)) {
-    logger.warn({ userId: user.userId, role: user.role }, "Admin access required");
+    logger.warn(
+      { userId: user.userId, role: user.role },
+      "Admin access required",
+    );
     return c.json({ errors: ["Admin access required"] }, 403);
   }
 

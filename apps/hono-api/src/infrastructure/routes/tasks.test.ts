@@ -42,7 +42,11 @@ describe("GET /tasks", () => {
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
       c.set("logger", logger);
-      c.set("user", { userId: "user1", email: "test@example.com", role: "user" });
+      c.set("user", {
+        userId: "user1",
+        email: "test@example.com",
+        role: "user",
+      });
       return next();
     });
 
@@ -84,7 +88,11 @@ describe("GET /tasks", () => {
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
       c.set("logger", logger);
-      c.set("user", { userId: "user1", email: "test@example.com", role: "user" });
+      c.set("user", {
+        userId: "user1",
+        email: "test@example.com",
+        role: "user",
+      });
       return next();
     });
 
