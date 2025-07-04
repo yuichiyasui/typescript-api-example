@@ -1,6 +1,7 @@
 import type { MiddlewareHandler } from "hono";
 import { getCookie } from "hono/cookie";
 
+import { UserRole } from "../../domain/value/role.js";
 import type { Context } from "../context.js";
 
 import { verifyAccessToken } from "./jwt.js";
@@ -64,7 +65,7 @@ export const adminMiddleware: MiddlewareHandler<Context> = async (
     return c.json({ errors: ["Authentication required"] }, 401);
   }
 
-  if (user.role !== "2") {
+  if (!UserRole.isAdminRole(user.role)) {
     logger.warn({ userId: user.userId, role: user.role }, "Admin access required");
     return c.json({ errors: ["Admin access required"] }, 403);
   }
