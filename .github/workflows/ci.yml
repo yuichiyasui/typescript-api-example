@@ -6,12 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  NODE_VERSION: 22
-  JWT_SECRET: test-secret
-  JWT_REFRESH_SECRET: test-refresh-secret
-  DATABASE_URL: file:./test.db
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
