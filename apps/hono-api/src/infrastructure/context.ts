@@ -1,3 +1,4 @@
+import type { IProjectsRepository } from "../domain/interface/projects-repository.js";
 import type { ITasksRepository } from "../domain/interface/tasks-repository.js";
 import type { IUsersRepository } from "../domain/interface/users-repository.js";
 
@@ -13,6 +14,7 @@ export type Context = {
   Variables: {
     tasksRepository: ITasksRepository;
     usersRepository: IUsersRepository;
+    projectsRepository: IProjectsRepository;
     logger: Logger;
     traceId: string;
     user?: AuthenticatedUser;

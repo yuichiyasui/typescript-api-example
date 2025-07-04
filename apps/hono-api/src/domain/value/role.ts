@@ -67,4 +67,11 @@ export class UserRole {
   isAdmin(): boolean {
     return this._value === UserRoleConstants.ADMIN;
   }
+
+  static isAdminRole(roleValue: string | number): boolean {
+    if (typeof roleValue === "number") {
+      return roleValue === UserRoleDbValues.ADMIN;
+    }
+    return roleValue === UserRoleConstants.ADMIN;
+  }
 }
