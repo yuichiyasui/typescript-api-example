@@ -51,3 +51,23 @@ export const optionalAuthMiddleware: MiddlewareHandler<Context> = async (
 
   await next();
 };
+
+export const adminMiddleware: MiddlewareHandler<Context> = async (
+  c,
+  next,
+): Promise<Response | void> => {
+  const logger = c.get("logger");
+  const user = c.get("user");
+
+  if (!user) {
+    logger.warn("No user context found");
+    return c.json({ errors: ["Authentication required"] }, 401);
+  }
+
+  if (user.role !== "2") {
+    logger.warn({ userId: user.userId, role: user.role }, "Admin access required");
+    return c.json({ errors: ["Admin access required"] }, 403);
+  }
+
+  await next();
+};

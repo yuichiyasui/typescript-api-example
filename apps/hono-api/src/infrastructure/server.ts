@@ -7,8 +7,10 @@ import type { Context } from "./context.js";
 import { env } from "./env.js";
 import { logger } from "./logger.js";
 import { traceIdMiddleware } from "./middleware/trace-id.js";
+import { ProjectsRepository } from "./repository/projects-repository.js";
 import { TasksRepository } from "./repository/tasks-repository.js";
 import { UsersRepository } from "./repository/users-repository.js";
+import { projectsRoutes } from "./routes/projects.js";
 import { tasksRoutes } from "./routes/tasks.js";
 import { usersRoutes } from "./routes/users.js";
 
@@ -34,6 +36,7 @@ app.use("*", async (c, next) => {
   c.set("logger", childLogger);
   c.set("tasksRepository", new TasksRepository());
   c.set("usersRepository", new UsersRepository());
+  c.set("projectsRepository", new ProjectsRepository());
 
   childLogger.info(
     {
@@ -60,6 +63,7 @@ app.use("*", async (c, next) => {
 
 app.route("/tasks", tasksRoutes);
 app.route("/users", usersRoutes);
+app.route("/projects", projectsRoutes);
 
 // OpenAPI documentation endpoints
 app.doc("/openapi.json", {
