@@ -6,6 +6,14 @@ import { logger } from "../logger.js";
 
 import { tasksRoutes } from "./tasks.js";
 
+vi.mock("../auth/jwt.js", () => ({
+  verifyAccessToken: vi.fn().mockReturnValue({
+    userId: "user1",
+    email: "test@example.com",
+    role: "user",
+  }),
+}));
+
 describe("GET /tasks", () => {
   it("タスクリストを正常に返す", async () => {
     const app = new Hono<Context>();
@@ -34,6 +42,7 @@ describe("GET /tasks", () => {
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
       c.set("logger", logger);
+      c.set("user", { userId: "user1", email: "test@example.com", role: "user" });
       return next();
     });
 
@@ -41,6 +50,9 @@ describe("GET /tasks", () => {
 
     const response = await app.request("/tasks", {
       method: "GET",
+      headers: {
+        Cookie: "accessToken=dummy-token",
+      },
     });
 
     expect(response.status).toBe(200);
@@ -72,6 +84,7 @@ describe("GET /tasks", () => {
     app.use("*", (c, next) => {
       c.set("tasksRepository", mockTasksRepository);
       c.set("logger", logger);
+      c.set("user", { userId: "user1", email: "test@example.com", role: "user" });
       return next();
     });
 
@@ -79,6 +92,9 @@ describe("GET /tasks", () => {
 
     const response = await app.request("/tasks", {
       method: "GET",
+      headers: {
+        Cookie: "accessToken=dummy-token",
+      },
     });
 
     expect(response.status).toBe(200);
