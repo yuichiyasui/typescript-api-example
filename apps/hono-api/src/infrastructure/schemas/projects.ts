@@ -1,12 +1,14 @@
-import { z } from "zod";
 import { createRoute } from "@hono/zod-openapi";
+import { z } from "zod";
 
 export const ProjectSchema = z.object({
   id: z.string().openapi({ description: "プロジェクトID", example: "abc123" }),
   name: z
     .string()
     .openapi({ description: "プロジェクト名", example: "新しいプロジェクト" }),
-  createdBy: z.string().openapi({ description: "作成者ID", example: "user123" }),
+  createdBy: z
+    .string()
+    .openapi({ description: "作成者ID", example: "user123" }),
 });
 
 export const CreateProjectRequestSchema = z.object({
