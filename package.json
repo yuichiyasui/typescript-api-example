@@ -10,7 +10,8 @@
     "format": "prettier . --write",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
-    "test": "turbo test"
+    "test": "turbo test:run",
+    "test:coverage": "turbo test:run -- --coverage"
   },
   "devDependencies": {
     "prettier": "3.5.3",
