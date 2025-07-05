@@ -63,7 +63,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data).toEqual({
         projects: mockProjects,
         pagination: {
@@ -101,7 +103,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data).toEqual({
         projects: mockProjects,
         pagination: {
@@ -132,7 +136,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data.pagination.page).toBe(1);
       expect(mockProjectsRepository.findByUserId).toHaveBeenCalledWith(
         "user1",
@@ -152,7 +158,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data.pagination.page).toBe(1);
       expect(mockProjectsRepository.findByUserId).toHaveBeenCalledWith(
         "user1",
@@ -172,7 +180,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data.pagination.limit).toBe(10);
       expect(mockProjectsRepository.findByUserId).toHaveBeenCalledWith(
         "user1",
@@ -192,7 +202,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data.pagination.limit).toBe(100);
       expect(mockProjectsRepository.findByUserId).toHaveBeenCalledWith(
         "user1",
@@ -212,7 +224,9 @@ describe("Projects Routes", () => {
       });
 
       expect(response.status).toBe(200);
-      const data = await response.json() as { pagination: { page: number; limit: number } };
+      const data = (await response.json()) as {
+        pagination: { page: number; limit: number };
+      };
       expect(data).toEqual({
         projects: [],
         pagination: {

@@ -172,9 +172,7 @@ export const logoutUserRoute = createRoute({
 
 export const GetUserSelfResponseSchema = z.object({
   id: z.string().openapi({ description: "ユーザーID", example: "abc123" }),
-  name: z
-    .string()
-    .openapi({ description: "ユーザー名", example: "田中太郎" }),
+  name: z.string().openapi({ description: "ユーザー名", example: "田中太郎" }),
   email: z.string().email().openapi({
     description: "メールアドレス",
     example: "tanaka@example.com",
@@ -210,7 +208,8 @@ export const getUserSelfRoute = createRoute({
           schema: GetUserSelfErrorResponseSchema,
         },
       },
-      description: "認証失敗（JWTトークンが無効またはユーザーが見つかりません）",
+      description:
+        "認証失敗（JWTトークンが無効またはユーザーが見つかりません）",
     },
   },
 });
