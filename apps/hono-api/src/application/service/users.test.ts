@@ -184,7 +184,7 @@ describe("getUserSelf", () => {
 
     const result = await getUserSelf(
       { usersRepository: mockUsersRepository },
-      "user123"
+      "user123",
     );
 
     expect(result.success).toBe(true);
@@ -216,7 +216,7 @@ describe("getUserSelf", () => {
 
     const result = await getUserSelf(
       { usersRepository: mockUsersRepository },
-      "admin123"
+      "admin123",
     );
 
     expect(result.success).toBe(true);
@@ -241,7 +241,7 @@ describe("getUserSelf", () => {
 
     const result = await getUserSelf(
       { usersRepository: mockUsersRepository },
-      "non-existent-user-id"
+      "non-existent-user-id",
     );
 
     expect(result.success).toBe(false);
@@ -249,6 +249,8 @@ describe("getUserSelf", () => {
       expect(result.errors).toEqual(["User not found"]);
     }
 
-    expect(mockUsersRepository.findById).toHaveBeenCalledWith("non-existent-user-id");
+    expect(mockUsersRepository.findById).toHaveBeenCalledWith(
+      "non-existent-user-id",
+    );
   });
 });

@@ -228,8 +228,8 @@ describe("GET /users/self", () => {
     });
 
     expect(response.status).toBe(401);
-    
-    const body = await response.json() as { errors: string[] };
+
+    const body = (await response.json()) as { errors: string[] };
     expect(body.errors).toContain("Authentication required");
   });
 
@@ -240,7 +240,7 @@ describe("GET /users/self", () => {
       "テストユーザー",
       "test@example.com",
       "Password123!",
-      UserRole.member()
+      UserRole.member(),
     );
 
     const mockUsersRepository = {
@@ -272,7 +272,7 @@ describe("GET /users/self", () => {
 
       try {
         const userEntity = await usersRepository.findById(user.userId);
-        
+
         if (!userEntity) {
           logger.warn({ userId: user.userId }, "User not found");
           return c.json({ errors: ["User not found"] }, 401);
@@ -285,7 +285,10 @@ describe("GET /users/self", () => {
           role: userEntity.roleValue as "MEMBER" | "ADMIN",
         };
 
-        logger.info({ userId: user.userId }, "User self info retrieved successfully");
+        logger.info(
+          { userId: user.userId },
+          "User self info retrieved successfully",
+        );
         return c.json(userInfo, 200);
       } catch (error) {
         logger.error({ error }, "Failed to retrieve user self info");
@@ -298,7 +301,7 @@ describe("GET /users/self", () => {
     });
 
     expect(response.status).toBe(200);
-    
+
     const body = await response.json();
     expect(body).toEqual({
       id: user.id,
@@ -315,7 +318,7 @@ describe("GET /users/self", () => {
       "管理者",
       "admin@example.com",
       "Password123!",
-      UserRole.admin()
+      UserRole.admin(),
     );
 
     const mockUsersRepository = {
@@ -347,7 +350,7 @@ describe("GET /users/self", () => {
 
       try {
         const userEntity = await usersRepository.findById(user.userId);
-        
+
         if (!userEntity) {
           logger.warn({ userId: user.userId }, "User not found");
           return c.json({ errors: ["User not found"] }, 401);
@@ -360,7 +363,10 @@ describe("GET /users/self", () => {
           role: userEntity.roleValue as "MEMBER" | "ADMIN",
         };
 
-        logger.info({ userId: user.userId }, "User self info retrieved successfully");
+        logger.info(
+          { userId: user.userId },
+          "User self info retrieved successfully",
+        );
         return c.json(userInfo, 200);
       } catch (error) {
         logger.error({ error }, "Failed to retrieve user self info");
@@ -373,7 +379,7 @@ describe("GET /users/self", () => {
     });
 
     expect(response.status).toBe(200);
-    
+
     const body = await response.json();
     expect(body).toEqual({
       id: user.id,
@@ -415,7 +421,7 @@ describe("GET /users/self", () => {
 
       try {
         const userEntity = await usersRepository.findById(user.userId);
-        
+
         if (!userEntity) {
           logger.warn({ userId: user.userId }, "User not found");
           return c.json({ errors: ["User not found"] }, 401);
@@ -428,7 +434,10 @@ describe("GET /users/self", () => {
           role: userEntity.roleValue as "MEMBER" | "ADMIN",
         };
 
-        logger.info({ userId: user.userId }, "User self info retrieved successfully");
+        logger.info(
+          { userId: user.userId },
+          "User self info retrieved successfully",
+        );
         return c.json(userInfo, 200);
       } catch (error) {
         logger.error({ error }, "Failed to retrieve user self info");
@@ -441,8 +450,8 @@ describe("GET /users/self", () => {
     });
 
     expect(response.status).toBe(401);
-    
-    const body = await response.json() as { errors: string[] };
+
+    const body = (await response.json()) as { errors: string[] };
     expect(body.errors).toContain("User not found");
   });
 });

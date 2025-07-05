@@ -49,7 +49,7 @@ app.openapi(getProjectsRoute, async (c) => {
 app.openapi(createProjectRoute, async (c) => {
   const logger = c.get("logger");
   const user = c.get("user")!;
-  
+
   // 管理者権限をチェック
   if (!user || !UserRole.isAdminRole(user.role)) {
     logger.warn(

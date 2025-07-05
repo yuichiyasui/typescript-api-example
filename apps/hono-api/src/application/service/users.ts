@@ -140,7 +140,7 @@ export const getUserSelf = async (
   userId: string,
 ): Promise<GetUserSelfResponse> => {
   const user = await deps.usersRepository.findById(userId);
-  
+
   if (!user) {
     return {
       success: false,

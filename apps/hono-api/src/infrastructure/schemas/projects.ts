@@ -61,13 +61,13 @@ export const getProjectsRoute = createRoute({
         .number()
         .int()
         .default(1)
-        .transform(val => val <= 0 ? 1 : val)
+        .transform((val) => (val <= 0 ? 1 : val))
         .openapi({ description: "ページ番号", example: 1 }),
       limit: z.coerce
         .number()
         .int()
         .default(10)
-        .transform(val => val <= 0 ? 10 : val > 100 ? 100 : val)
+        .transform((val) => (val <= 0 ? 10 : val > 100 ? 100 : val))
         .openapi({ description: "1ページあたりの件数", example: 10 }),
     }),
   },

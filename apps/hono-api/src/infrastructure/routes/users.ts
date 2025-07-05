@@ -1,7 +1,11 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { setCookie, deleteCookie } from "hono/cookie";
 
-import { registerUser, loginUser, getUserSelf } from "../../application/service/users.js";
+import {
+  registerUser,
+  loginUser,
+  getUserSelf,
+} from "../../application/service/users.js";
 import { authMiddleware } from "../auth/middleware.js";
 import type { Context } from "../context.js";
 import {
@@ -109,17 +113,26 @@ app.openapi(getUserSelfRoute, async (c) => {
     );
 
     if (!result.success) {
-      logger.warn({ userId: user.userId, errors: result.errors }, "Failed to retrieve user self info");
+      logger.warn(
+        { userId: user.userId, errors: result.errors },
+        "Failed to retrieve user self info",
+      );
       return c.json({ errors: result.errors }, 401);
     }
 
-    logger.info({ userId: user.userId }, "User self info retrieved successfully");
-    return c.json({
-      id: result.user.id,
-      name: result.user.name,
-      email: result.user.email,
-      role: result.user.role as "MEMBER" | "ADMIN",
-    }, 200);
+    logger.info(
+      { userId: user.userId },
+      "User self info retrieved successfully",
+    );
+    return c.json(
+      {
+        id: result.user.id,
+        name: result.user.name,
+        email: result.user.email,
+        role: result.user.role as "MEMBER" | "ADMIN",
+      },
+      200,
+    );
   } catch (error) {
     logger.error({ error }, "Failed to retrieve user self info");
     throw error;
