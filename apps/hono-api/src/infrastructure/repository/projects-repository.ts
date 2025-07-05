@@ -1,6 +1,9 @@
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import type { IProjectsRepository } from "../../domain/interface/projects-repository.js";
+import type {
+  IProjectsRepository,
+  PaginationOptions,
+} from "../../domain/interface/projects-repository.js";
 import { Project } from "../../domain/project.js";
 import { db } from "../database/connection.js";
 import { projectMembers, projects } from "../database/schema.js";
@@ -32,8 +35,11 @@ export class ProjectsRepository implements IProjectsRepository {
     return Project.restore(row.id, row.name, row.createdBy);
   }
 
-  async findByUserId(userId: string): Promise<Project[]> {
-    const rows = await db
+  async findByUserId(
+    userId: string,
+    options?: PaginationOptions,
+  ): Promise<Project[]> {
+    const baseQuery = db
       .select({
         id: projects.id,
         name: projects.name,
@@ -43,6 +49,20 @@ export class ProjectsRepository implements IProjectsRepository {
       .innerJoin(projectMembers, eq(projects.id, projectMembers.projectId))
       .where(eq(projectMembers.userId, userId));
 
+    const rows = options
+      ? await baseQuery.limit(options.limit).offset(options.offset)
+      : await baseQuery;
+
     return rows.map((row) => Project.restore(row.id, row.name, row.createdBy));
+  }
+
+  async countByUserId(userId: string): Promise<number> {
+    const result = await db
+      .select({ count: count() })
+      .from(projects)
+      .innerJoin(projectMembers, eq(projects.id, projectMembers.projectId))
+      .where(eq(projectMembers.userId, userId));
+
+    return result[0]?.count ?? 0;
   }
 }
