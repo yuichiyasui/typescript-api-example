@@ -119,3 +119,42 @@ export const loginUser = async (
     },
   };
 };
+
+export type GetUserSelfResponse =
+  | {
+      success: true;
+      user: {
+        id: string;
+        name: string;
+        email: string;
+        role: UserRoleConstant;
+      };
+    }
+  | {
+      success: false;
+      errors: string[];
+    };
+
+export const getUserSelf = async (
+  deps: Dependencies,
+  userId: string,
+): Promise<GetUserSelfResponse> => {
+  const user = await deps.usersRepository.findById(userId);
+  
+  if (!user) {
+    return {
+      success: false,
+      errors: ["User not found"],
+    };
+  }
+
+  return {
+    success: true,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.roleValue as UserRoleConstant,
+    },
+  };
+};
