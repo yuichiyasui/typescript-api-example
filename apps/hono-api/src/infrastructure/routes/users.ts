@@ -2,11 +2,13 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { setCookie, deleteCookie } from "hono/cookie";
 
 import { registerUser, loginUser } from "../../application/service/users.js";
+import { authMiddleware } from "../auth/middleware.js";
 import type { Context } from "../context.js";
 import {
   registerUserRoute,
   loginUserRoute,
   logoutUserRoute,
+  getUserSelfRoute,
 } from "../schemas/users.js";
 
 const app = new OpenAPIHono<Context>();
@@ -85,6 +87,43 @@ app.openapi(logoutUserRoute, async (c) => {
 
   logger.info("User logged out successfully");
   return c.json({ message: "Logged out successfully" }, 200);
+});
+
+app.use("/users/self", authMiddleware);
+
+app.openapi(getUserSelfRoute, async (c) => {
+  const logger = c.get("logger");
+  const user = c.get("user");
+  const usersRepository = c.get("usersRepository");
+
+  if (!user) {
+    logger.warn("No user context found");
+    return c.json({ errors: ["Authentication required"] }, 401);
+  }
+
+  logger.info("User self info retrieval attempt", { userId: user.userId });
+
+  try {
+    const userEntity = await usersRepository.findById(user.userId);
+    
+    if (!userEntity) {
+      logger.warn({ userId: user.userId }, "User not found");
+      return c.json({ errors: ["User not found"] }, 401);
+    }
+
+    const userInfo = {
+      id: userEntity.id,
+      name: userEntity.name,
+      email: userEntity.email,
+      role: userEntity.roleValue as "MEMBER" | "ADMIN",
+    };
+
+    logger.info({ userId: user.userId }, "User self info retrieved successfully");
+    return c.json(userInfo, 200);
+  } catch (error) {
+    logger.error({ error }, "Failed to retrieve user self info");
+    throw error;
+  }
 });
 
 export const usersRoutes = app;

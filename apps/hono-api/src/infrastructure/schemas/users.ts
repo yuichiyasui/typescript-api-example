@@ -169,3 +169,48 @@ export const logoutUserRoute = createRoute({
     },
   },
 });
+
+export const GetUserSelfResponseSchema = z.object({
+  id: z.string().openapi({ description: "ユーザーID", example: "abc123" }),
+  name: z
+    .string()
+    .openapi({ description: "ユーザー名", example: "田中太郎" }),
+  email: z.string().email().openapi({
+    description: "メールアドレス",
+    example: "tanaka@example.com",
+  }),
+  role: z.enum([UserRoleConstants.MEMBER, UserRoleConstants.ADMIN]).openapi({
+    description: "ユーザーロール",
+    example: UserRoleConstants.MEMBER,
+  }),
+});
+
+export const GetUserSelfErrorResponseSchema = z.object({
+  errors: z.array(z.string()).openapi({ description: "エラーメッセージ" }),
+});
+
+export const getUserSelfRoute = createRoute({
+  method: "get",
+  path: "/users/self",
+  tags: ["Users"],
+  summary: "ログインユーザー情報取得",
+  description: "ログインしているユーザーの情報を取得します。",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: GetUserSelfResponseSchema,
+        },
+      },
+      description: "ユーザー情報取得成功",
+    },
+    401: {
+      content: {
+        "application/json": {
+          schema: GetUserSelfErrorResponseSchema,
+        },
+      },
+      description: "認証失敗（JWTトークンが無効またはユーザーが見つかりません）",
+    },
+  },
+});
