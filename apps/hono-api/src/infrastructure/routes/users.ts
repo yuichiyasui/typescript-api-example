@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { setCookie, deleteCookie } from "hono/cookie";
 
-import { registerUser, loginUser } from "../../application/service/users.js";
+import { registerUser, loginUser, getUserSelf } from "../../application/service/users.js";
 import { authMiddleware } from "../auth/middleware.js";
 import type { Context } from "../context.js";
 import {
@@ -94,7 +94,6 @@ app.use("/users/self", authMiddleware);
 app.openapi(getUserSelfRoute, async (c) => {
   const logger = c.get("logger");
   const user = c.get("user");
-  const usersRepository = c.get("usersRepository");
 
   if (!user) {
     logger.warn("No user context found");
@@ -104,22 +103,23 @@ app.openapi(getUserSelfRoute, async (c) => {
   logger.info("User self info retrieval attempt", { userId: user.userId });
 
   try {
-    const userEntity = await usersRepository.findById(user.userId);
-    
-    if (!userEntity) {
-      logger.warn({ userId: user.userId }, "User not found");
-      return c.json({ errors: ["User not found"] }, 401);
+    const result = await getUserSelf(
+      { usersRepository: c.get("usersRepository") },
+      user.userId,
+    );
+
+    if (!result.success) {
+      logger.warn({ userId: user.userId, errors: result.errors }, "Failed to retrieve user self info");
+      return c.json({ errors: result.errors }, 401);
     }
 
-    const userInfo = {
-      id: userEntity.id,
-      name: userEntity.name,
-      email: userEntity.email,
-      role: userEntity.roleValue as "MEMBER" | "ADMIN",
-    };
-
     logger.info({ userId: user.userId }, "User self info retrieved successfully");
-    return c.json(userInfo, 200);
+    return c.json({
+      id: result.user.id,
+      name: result.user.name,
+      email: result.user.email,
+      role: result.user.role as "MEMBER" | "ADMIN",
+    }, 200);
   } catch (error) {
     logger.error({ error }, "Failed to retrieve user self info");
     throw error;

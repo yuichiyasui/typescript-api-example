@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { registerUser } from "./users.js";
+import { registerUser, getUserSelf } from "./users.js";
 import { User } from "../../domain/user.js";
 
 // Password value object をモック化
@@ -164,5 +164,91 @@ describe("registerUser", () => {
       "test@example.com",
       "StrongPassword123!",
     );
+  });
+});
+
+describe("getUserSelf", () => {
+  it("存在するユーザーの場合、ユーザー情報を返す", async () => {
+    const mockUser = {
+      id: "user123",
+      name: "テストユーザー",
+      email: "test@example.com",
+      roleValue: "MEMBER",
+    } as any;
+
+    const mockUsersRepository = {
+      save: vi.fn(),
+      findByEmail: vi.fn(),
+      findById: vi.fn().mockResolvedValue(mockUser),
+    };
+
+    const result = await getUserSelf(
+      { usersRepository: mockUsersRepository },
+      "user123"
+    );
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.user).toEqual({
+        id: "user123",
+        name: "テストユーザー",
+        email: "test@example.com",
+        role: "MEMBER",
+      });
+    }
+
+    expect(mockUsersRepository.findById).toHaveBeenCalledWith("user123");
+  });
+
+  it("管理者ユーザーの場合、管理者ロールを返す", async () => {
+    const mockUser = {
+      id: "admin123",
+      name: "管理者",
+      email: "admin@example.com",
+      roleValue: "ADMIN",
+    } as any;
+
+    const mockUsersRepository = {
+      save: vi.fn(),
+      findByEmail: vi.fn(),
+      findById: vi.fn().mockResolvedValue(mockUser),
+    };
+
+    const result = await getUserSelf(
+      { usersRepository: mockUsersRepository },
+      "admin123"
+    );
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.user).toEqual({
+        id: "admin123",
+        name: "管理者",
+        email: "admin@example.com",
+        role: "ADMIN",
+      });
+    }
+
+    expect(mockUsersRepository.findById).toHaveBeenCalledWith("admin123");
+  });
+
+  it("存在しないユーザーの場合、エラーを返す", async () => {
+    const mockUsersRepository = {
+      save: vi.fn(),
+      findByEmail: vi.fn(),
+      findById: vi.fn().mockResolvedValue(null),
+    };
+
+    const result = await getUserSelf(
+      { usersRepository: mockUsersRepository },
+      "non-existent-user-id"
+    );
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.errors).toEqual(["User not found"]);
+    }
+
+    expect(mockUsersRepository.findById).toHaveBeenCalledWith("non-existent-user-id");
   });
 });
