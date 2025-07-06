@@ -1,45 +1,46 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useGetProjectsQuery } from "@/__generated__/projects/projects";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
-interface Project {
-  id: string;
-  name: string;
-  createdBy: string;
-}
-
-interface Pagination {
+type Props = {
   page: number;
   limit: number;
-  total: number;
-  totalPages: number;
-}
+};
 
-interface ProjectsListProps {
-  projects: Project[];
-  pagination: Pagination;
-}
-
-export function ProjectsList({ projects, pagination }: ProjectsListProps) {
+export function ProjectsList({ page, limit }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { data } = useGetProjectsQuery({
+    page,
+    limit,
+  });
+
+  if (data?.status === 401) {
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
+    params.set("page", page.toString());
     router.push(`/projects?${params.toString()}`);
   };
 
   const renderPagination = () => {
-    const { page, totalPages } = pagination;
+    const { page, totalPages } = data.data.pagination;
     const pages = [];
     const maxVisiblePages = 5;
-    
+
     // 開始ページと終了ページを計算
     let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
+
     // 調整
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
@@ -54,7 +55,7 @@ export function ProjectsList({ projects, pagination }: ProjectsListProps) {
           className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
         >
           前へ
-        </button>
+        </button>,
       );
     }
 
@@ -66,12 +67,12 @@ export function ProjectsList({ projects, pagination }: ProjectsListProps) {
           onClick={() => handlePageChange(i)}
           className={`px-3 py-2 text-sm font-medium border ${
             i === page
-              ? 'bg-blue-50 border-blue-500 text-blue-600'
-              : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+              ? "bg-blue-50 border-blue-500 text-blue-600"
+              : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
           }`}
         >
           {i}
-        </button>
+        </button>,
       );
     }
 
@@ -84,14 +85,14 @@ export function ProjectsList({ projects, pagination }: ProjectsListProps) {
           className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
         >
           次へ
-        </button>
+        </button>,
       );
     }
 
     return pages;
   };
 
-  if (projects.length === 0) {
+  if (data.data.projects.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">参加しているプロジェクトはありません。</p>
@@ -102,7 +103,7 @@ export function ProjectsList({ projects, pagination }: ProjectsListProps) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
+        {data.data.projects.map((project) => (
           <div
             key={project.id}
             className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
@@ -134,14 +135,17 @@ export function ProjectsList({ projects, pagination }: ProjectsListProps) {
       </div>
 
       {/* ページネーション */}
-      {pagination.totalPages > 1 && (
+      {data.data.pagination.totalPages > 1 && (
         <div className="flex justify-center items-center space-x-2">
-          <div className="flex items-center">
-            {renderPagination()}
-          </div>
+          <div className="flex items-center">{renderPagination()}</div>
           <div className="ml-4 text-sm text-gray-700">
-            {pagination.total}件中 {(pagination.page - 1) * pagination.limit + 1} -{' '}
-            {Math.min(pagination.page * pagination.limit, pagination.total)} 件を表示
+            {data.data.pagination.total}件中{" "}
+            {(data.data.pagination.page - 1) * data.data.pagination.limit + 1} -{" "}
+            {Math.min(
+              data.data.pagination.page * data.data.pagination.limit,
+              data.data.pagination.total,
+            )}{" "}
+            件を表示
           </div>
         </div>
       )}

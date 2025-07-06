@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { postUsersLogout } from '@/lib/api';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'MEMBER' | 'ADMIN';
-}
-
-interface HeaderProps {
-  user: User;
-}
-
-export function Header({ user }: HeaderProps) {
+import {
+  useGetUsersSelfQuery,
+  usePostUsersLogoutMutation,
+} from "@/__generated__/users/users";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+export function Header() {
   const router = useRouter();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleLogout = async () => {
-    setIsLoggingOut(true);
-    try {
-      await postUsersLogout();
-      router.push('/sign-in');
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      setIsLoggingOut(false);
-    }
+  const { data } = useGetUsersSelfQuery({
+    query: {
+      enabled: !isPending,
+    },
+  });
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: logoutMutate } = usePostUsersLogoutMutation();
+
+  const handleLogout = () => {
+    startTransition(async () => {
+      try {
+        await logoutMutate();
+        router.push("/sign-in");
+        queryClient.removeQueries();
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    });
   };
 
   return (
@@ -41,16 +42,18 @@ export function Header({ user }: HeaderProps) {
             </h1>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-700">
-              {user.name}
-            </span>
-            <button
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            >
-              {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
-            </button>
+            {data?.status === 200 && (
+              <>
+                <span className="text-sm text-gray-700">{data.data.name}</span>
+                <button
+                  onClick={handleLogout}
+                  disabled={isPending}
+                  className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                >
+                  {isPending ? "ログアウト中..." : "ログアウト"}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -80,7 +80,7 @@ export type PostUsersLogin200 = {
   user: PostUsersLogin200User;
 };
 
-export type PostUsersLogin401 = {
+export type PostUsersLogin400 = {
   /** エラーメッセージ */
   errors: string[];
 };
@@ -303,12 +303,12 @@ export type postUsersLoginResponse200 = {
   status: 200
 }
 
-export type postUsersLoginResponse401 = {
-  data: PostUsersLogin401
-  status: 401
+export type postUsersLoginResponse400 = {
+  data: PostUsersLogin400
+  status: 400
 }
     
-export type postUsersLoginResponseComposite = postUsersLoginResponse200 | postUsersLoginResponse401;
+export type postUsersLoginResponseComposite = postUsersLoginResponse200 | postUsersLoginResponse400;
     
 export type postUsersLoginResponse = postUsersLoginResponseComposite & {
   headers: Headers;
@@ -409,7 +409,7 @@ export const getGetUsersUsersSelfUrl = () => {
 
   
 
-  return `http://localhost:3000/users/self`
+  return `http://localhost:3000/users/users/self`
 }
 
 export const getUsersUsersSelf = async ( options?: RequestInit): Promise<getUsersUsersSelfResponse> => {
