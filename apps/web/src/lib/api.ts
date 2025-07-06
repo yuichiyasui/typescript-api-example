@@ -56,12 +56,13 @@ export type PostUsersLoginBody = {
 /**
  * ユーザーロール
  */
-export type PostUsersLogin200UserRole =
-  (typeof PostUsersLogin200UserRole)[keyof typeof PostUsersLogin200UserRole];
+export type PostUsersLogin200UserRole = typeof PostUsersLogin200UserRole[keyof typeof PostUsersLogin200UserRole];
 
+
+ 
 export const PostUsersLogin200UserRole = {
-  MEMBER: "MEMBER",
-  ADMIN: "ADMIN",
+  MEMBER: 'MEMBER',
+  ADMIN: 'ADMIN',
 } as const;
 
 export type PostUsersLogin200User = {
@@ -79,7 +80,7 @@ export type PostUsersLogin200 = {
   user: PostUsersLogin200User;
 };
 
-export type PostUsersLogin401 = {
+export type PostUsersLogin400 = {
   /** エラーメッセージ */
   errors: string[];
 };
@@ -90,37 +91,148 @@ export type PostUsersLogout200 = {
 };
 
 /**
+ * ユーザーロール
+ */
+export type GetUsersUsersSelf200Role = typeof GetUsersUsersSelf200Role[keyof typeof GetUsersUsersSelf200Role];
+
+
+ 
+export const GetUsersUsersSelf200Role = {
+  MEMBER: 'MEMBER',
+  ADMIN: 'ADMIN',
+} as const;
+
+export type GetUsersUsersSelf200 = {
+  /** ユーザーID */
+  id: string;
+  /** ユーザー名 */
+  name: string;
+  /** メールアドレス */
+  email: string;
+  /** ユーザーロール */
+  role: GetUsersUsersSelf200Role;
+};
+
+export type GetUsersUsersSelf401 = {
+  /** エラーメッセージ */
+  errors: string[];
+};
+
+export type GetProjectsParams = {
+/**
+ * ページ番号
+ * @nullable
+ */
+page?: number | null;
+/**
+ * 1ページあたりの件数
+ * @nullable
+ */
+limit?: number | null;
+};
+
+export type GetProjects200ProjectsItem = {
+  /** プロジェクトID */
+  id: string;
+  /** プロジェクト名 */
+  name: string;
+  /** 作成者ID */
+  createdBy: string;
+};
+
+/**
+ * ページネーション情報
+ */
+export type GetProjects200Pagination = {
+  /**
+   * ページ番号
+   * @minimum 1
+   */
+  page: number;
+  /**
+   * 1ページあたりの件数
+   * @minimum 1
+   * @maximum 100
+   */
+  limit: number;
+  /**
+   * 総件数
+   * @minimum 0
+   */
+  total: number;
+  /**
+   * 総ページ数
+   * @minimum 0
+   */
+  totalPages: number;
+};
+
+export type GetProjects200 = {
+  /** プロジェクト一覧 */
+  projects: GetProjects200ProjectsItem[];
+  /** ページネーション情報 */
+  pagination: GetProjects200Pagination;
+};
+
+export type PostProjectsBody = {
+  /**
+   * プロジェクト名
+   * @minLength 1
+   * @maxLength 255
+   */
+  name: string;
+};
+
+export type PostProjects201 = {
+  /** プロジェクトID */
+  id: string;
+  /** プロジェクト名 */
+  name: string;
+  /** 作成者ID */
+  createdBy: string;
+};
+
+/**
  * すべてのタスクのリストを取得します
  * @summary すべてのタスクを取得
  */
 export type getTasksResponse200 = {
-  data: GetTasks200;
-  status: 200;
-};
-
+  data: GetTasks200
+  status: 200
+}
+    
 export type getTasksResponseComposite = getTasksResponse200;
-
+    
 export type getTasksResponse = getTasksResponseComposite & {
   headers: Headers;
-};
+}
 
 export const getGetTasksUrl = () => {
-  return `http://localhost:3000/tasks`;
-};
 
-export const getTasks = async (
-  options?: RequestInit,
-): Promise<getTasksResponse> => {
-  const res = await fetch(getGetTasksUrl(), {
+
+  
+
+  return `http://localhost:3000/tasks`
+}
+
+export const getTasks = async ( options?: RequestInit): Promise<getTasksResponse> => {
+  
+  const res = await fetch(getGetTasksUrl(),
+  {      
     ...options,
-    method: "GET",
-  });
+    method: 'GET'
+    
+    
+  }
+)
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: getTasksResponse["data"] = body ? JSON.parse(body) : {};
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: getTasksResponse['data'] = body ? JSON.parse(body) : {}
 
-  return { data, status: res.status, headers: res.headers } as getTasksResponse;
-};
+  return { data, status: res.status, headers: res.headers } as getTasksResponse
+}
+
+
 
 /**
  * 新しいユーザーを登録します。
@@ -136,47 +248,48 @@ export const getTasks = async (
  * @summary ユーザー登録
  */
 export type postUsersRegisterResponse200 = {
-  data: PostUsersRegister200;
-  status: 200;
-};
+  data: PostUsersRegister200
+  status: 200
+}
 
 export type postUsersRegisterResponse400 = {
-  data: PostUsersRegister400;
-  status: 400;
-};
-
-export type postUsersRegisterResponseComposite =
-  | postUsersRegisterResponse200
-  | postUsersRegisterResponse400;
-
+  data: PostUsersRegister400
+  status: 400
+}
+    
+export type postUsersRegisterResponseComposite = postUsersRegisterResponse200 | postUsersRegisterResponse400;
+    
 export type postUsersRegisterResponse = postUsersRegisterResponseComposite & {
   headers: Headers;
-};
+}
 
 export const getPostUsersRegisterUrl = () => {
-  return `http://localhost:3000/users/register`;
-};
 
-export const postUsersRegister = async (
-  postUsersRegisterBody: PostUsersRegisterBody,
-  options?: RequestInit,
-): Promise<postUsersRegisterResponse> => {
-  const res = await fetch(getPostUsersRegisterUrl(), {
+
+  
+
+  return `http://localhost:3000/users/register`
+}
+
+export const postUsersRegister = async (postUsersRegisterBody: PostUsersRegisterBody, options?: RequestInit): Promise<postUsersRegisterResponse> => {
+  
+  const res = await fetch(getPostUsersRegisterUrl(),
+  {      
     ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postUsersRegisterBody),
-  });
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postUsersRegisterBody,)
+  }
+)
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: postUsersRegisterResponse["data"] = body ? JSON.parse(body) : {};
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: postUsersRegisterResponse['data'] = body ? JSON.parse(body) : {}
 
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postUsersRegisterResponse;
-};
+  return { data, status: res.status, headers: res.headers } as postUsersRegisterResponse
+}
+
+
 
 /**
  * ユーザーのログインを行います。
@@ -186,81 +299,234 @@ HTTPOnlyクッキーとして設定されます。
  * @summary ユーザーログイン
  */
 export type postUsersLoginResponse200 = {
-  data: PostUsersLogin200;
-  status: 200;
-};
+  data: PostUsersLogin200
+  status: 200
+}
 
-export type postUsersLoginResponse401 = {
-  data: PostUsersLogin401;
-  status: 401;
-};
-
-export type postUsersLoginResponseComposite =
-  | postUsersLoginResponse200
-  | postUsersLoginResponse401;
-
+export type postUsersLoginResponse400 = {
+  data: PostUsersLogin400
+  status: 400
+}
+    
+export type postUsersLoginResponseComposite = postUsersLoginResponse200 | postUsersLoginResponse400;
+    
 export type postUsersLoginResponse = postUsersLoginResponseComposite & {
   headers: Headers;
-};
+}
 
 export const getPostUsersLoginUrl = () => {
-  return `http://localhost:3000/users/login`;
-};
 
-export const postUsersLogin = async (
-  postUsersLoginBody: PostUsersLoginBody,
-  options?: RequestInit,
-): Promise<postUsersLoginResponse> => {
-  const res = await fetch(getPostUsersLoginUrl(), {
+
+  
+
+  return `http://localhost:3000/users/login`
+}
+
+export const postUsersLogin = async (postUsersLoginBody: PostUsersLoginBody, options?: RequestInit): Promise<postUsersLoginResponse> => {
+  
+  const res = await fetch(getPostUsersLoginUrl(),
+  {      
     ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(postUsersLoginBody),
-  });
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postUsersLoginBody,)
+  }
+)
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: postUsersLoginResponse["data"] = body ? JSON.parse(body) : {};
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: postUsersLoginResponse['data'] = body ? JSON.parse(body) : {}
 
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postUsersLoginResponse;
-};
+  return { data, status: res.status, headers: res.headers } as postUsersLoginResponse
+}
+
+
 
 /**
  * ユーザーのログアウトを行い、認証クッキーをクリアします。
  * @summary ユーザーログアウト
  */
 export type postUsersLogoutResponse200 = {
-  data: PostUsersLogout200;
-  status: 200;
-};
-
+  data: PostUsersLogout200
+  status: 200
+}
+    
 export type postUsersLogoutResponseComposite = postUsersLogoutResponse200;
-
+    
 export type postUsersLogoutResponse = postUsersLogoutResponseComposite & {
   headers: Headers;
-};
+}
 
 export const getPostUsersLogoutUrl = () => {
-  return `http://localhost:3000/users/logout`;
-};
 
-export const postUsersLogout = async (
-  options?: RequestInit,
-): Promise<postUsersLogoutResponse> => {
-  const res = await fetch(getPostUsersLogoutUrl(), {
+
+  
+
+  return `http://localhost:3000/users/logout`
+}
+
+export const postUsersLogout = async ( options?: RequestInit): Promise<postUsersLogoutResponse> => {
+  
+  const res = await fetch(getPostUsersLogoutUrl(),
+  {      
     ...options,
-    method: "POST",
+    method: 'POST'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: postUsersLogoutResponse['data'] = body ? JSON.parse(body) : {}
+
+  return { data, status: res.status, headers: res.headers } as postUsersLogoutResponse
+}
+
+
+
+/**
+ * ログインしているユーザーの情報を取得します。
+ * @summary ログインユーザー情報取得
+ */
+export type getUsersUsersSelfResponse200 = {
+  data: GetUsersUsersSelf200
+  status: 200
+}
+
+export type getUsersUsersSelfResponse401 = {
+  data: GetUsersUsersSelf401
+  status: 401
+}
+    
+export type getUsersUsersSelfResponseComposite = getUsersUsersSelfResponse200 | getUsersUsersSelfResponse401;
+    
+export type getUsersUsersSelfResponse = getUsersUsersSelfResponseComposite & {
+  headers: Headers;
+}
+
+export const getGetUsersUsersSelfUrl = () => {
+
+
+  
+
+  return `http://localhost:3000/users/users/self`
+}
+
+export const getUsersUsersSelf = async ( options?: RequestInit): Promise<getUsersUsersSelfResponse> => {
+  
+  const res = await fetch(getGetUsersUsersSelfUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: getUsersUsersSelfResponse['data'] = body ? JSON.parse(body) : {}
+
+  return { data, status: res.status, headers: res.headers } as getUsersUsersSelfResponse
+}
+
+
+
+/**
+ * ユーザーが参加しているプロジェクトの一覧をページネーション付きで取得します。
+ * @summary 参加しているプロジェクト一覧を取得
+ */
+export type getProjectsResponse200 = {
+  data: GetProjects200
+  status: 200
+}
+
+export type getProjectsResponse401 = {
+  data: void
+  status: 401
+}
+    
+export type getProjectsResponseComposite = getProjectsResponse200 | getProjectsResponse401;
+    
+export type getProjectsResponse = getProjectsResponseComposite & {
+  headers: Headers;
+}
+
+export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
   });
 
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-  const data: postUsersLogoutResponse["data"] = body ? JSON.parse(body) : {};
+  const stringifiedParams = normalizedParams.toString();
 
-  return {
-    data,
-    status: res.status,
-    headers: res.headers,
-  } as postUsersLogoutResponse;
-};
+  return stringifiedParams.length > 0 ? `http://localhost:3000/projects?${stringifiedParams}` : `http://localhost:3000/projects`
+}
+
+export const getProjects = async (params?: GetProjectsParams, options?: RequestInit): Promise<getProjectsResponse> => {
+  
+  const res = await fetch(getGetProjectsUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: getProjectsResponse['data'] = body ? JSON.parse(body) : {}
+
+  return { data, status: res.status, headers: res.headers } as getProjectsResponse
+}
+
+
+
+/**
+ * 新しいプロジェクトを作成します。管理者権限が必要です。
+ * @summary 新しいプロジェクトを作成
+ */
+export type postProjectsResponse201 = {
+  data: PostProjects201
+  status: 201
+}
+
+export type postProjectsResponse403 = {
+  data: void
+  status: 403
+}
+    
+export type postProjectsResponseComposite = postProjectsResponse201 | postProjectsResponse403;
+    
+export type postProjectsResponse = postProjectsResponseComposite & {
+  headers: Headers;
+}
+
+export const getPostProjectsUrl = () => {
+
+
+  
+
+  return `http://localhost:3000/projects`
+}
+
+export const postProjects = async (postProjectsBody: PostProjectsBody, options?: RequestInit): Promise<postProjectsResponse> => {
+  
+  const res = await fetch(getPostProjectsUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postProjectsBody,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text()
+  const data: postProjectsResponse['data'] = body ? JSON.parse(body) : {}
+
+  return { data, status: res.status, headers: res.headers } as postProjectsResponse
+}

@@ -137,7 +137,7 @@ HTTPOnlyクッキーとして設定されます。`,
       },
       description: "ログイン成功",
     },
-    401: {
+    400: {
       content: {
         "application/json": {
           schema: LoginUserErrorResponseSchema,
@@ -189,7 +189,7 @@ export const GetUserSelfErrorResponseSchema = z.object({
 
 export const getUserSelfRoute = createRoute({
   method: "get",
-  path: "/users/self",
+  path: "/self",
   tags: ["Users"],
   summary: "ログインユーザー情報取得",
   description: "ログインしているユーザーの情報を取得します。",

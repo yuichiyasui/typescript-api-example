@@ -1,18 +1,18 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { setCookie, deleteCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 
 import {
-  registerUser,
-  loginUser,
   getUserSelf,
+  loginUser,
+  registerUser,
 } from "../../application/service/users.js";
 import { authMiddleware } from "../auth/middleware.js";
 import type { Context } from "../context.js";
 import {
-  registerUserRoute,
+  getUserSelfRoute,
   loginUserRoute,
   logoutUserRoute,
-  getUserSelfRoute,
+  registerUserRoute,
 } from "../schemas/users.js";
 
 const app = new OpenAPIHono<Context>();
@@ -56,7 +56,7 @@ app.openapi(loginUserRoute, async (c) => {
 
     if (!result.success) {
       logger.warn({ errors: result.errors }, "User login failed");
-      return c.json({ errors: result.errors }, 401);
+      return c.json({ errors: result.errors }, 400);
     }
 
     setCookie(c, "accessToken", result.tokens.accessToken, {
@@ -93,7 +93,7 @@ app.openapi(logoutUserRoute, async (c) => {
   return c.json({ message: "Logged out successfully" }, 200);
 });
 
-app.use("/users/self", authMiddleware);
+app.use("/self", authMiddleware);
 
 app.openapi(getUserSelfRoute, async (c) => {
   const logger = c.get("logger");
