@@ -9,8 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,17 +23,25 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+        env:
+          NODE_ENV: test
 
       - name: Format check
         run: pnpm format --check
-
-      - name: Lint check
         env:
           NODE_ENV: test
+
+      - name: Lint check
         run: pnpm lint
+        env:
+          NODE_ENV: test
 
       - name: Type check
         run: pnpm type-check
+        env:
+          NODE_ENV: test
 
       - name: Run tests with coverage
         run: pnpm test:coverage
+        env:
+          NODE_ENV: test
