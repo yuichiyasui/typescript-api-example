@@ -30,6 +30,8 @@ jobs:
         run: pnpm format --check
 
       - name: Lint check
+        env:
+          NODE_ENV: test
         run: pnpm lint
 
       - name: Type check
